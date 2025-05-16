@@ -1,0 +1,15 @@
+import { z } from 'zod';
+
+export const criarEmpresaSchema = z.object({
+  cnpj: z
+    .string()
+    .min(13, 'CNPJ inválido')
+    .max(14, 'CNPJ inválido')
+    .regex(/^\d{14}$/, 'CNPJ inválido'),
+  dominio: z.string().min(1, 'Domínio inválido'),
+  apiKey: z.string().min(1, 'API Key é obrigatória'),
+  apiSecret: z.string().min(1, 'API Secret é obrigatória'),
+  ecommerce: z.string().min(1, 'E-commerce é obrigatório'),
+});
+
+export type CriarEmpresaSchema = z.infer<typeof criarEmpresaSchema>;
