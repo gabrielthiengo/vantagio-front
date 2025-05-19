@@ -14,6 +14,8 @@ import { Automacoes } from './pages/Automacoes';
 import { Campanhas } from './pages/Campanhas';
 import Clientes from './pages/Clientes';
 import Pedidos from './pages/Pedidos';
+import ClienteDetalhe from './pages/ClienteDetalhe';
+import { AutomacaoCriar } from './pages/AutomcacaoCriar';
 
 function App() {
   return (
@@ -58,6 +60,15 @@ function App() {
           />
 
           <Route
+            path="/automacao/criar"
+            element={
+              <ProtectedLayout>
+                <AutomacaoCriar />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
             path="/campanhas"
             element={
               <ProtectedLayout>
@@ -71,6 +82,15 @@ function App() {
             element={
               <ProtectedLayout>
                 <Clientes />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
+            path="/cliente/detalhe/:id"
+            element={
+              <ProtectedLayout>
+                <ClienteDetalhe />
               </ProtectedLayout>
             }
           />
