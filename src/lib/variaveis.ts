@@ -1,0 +1,18 @@
+export const variaveisMensagem = [
+  { chave: '{{nome}}', descricao: 'Nome do cliente' },
+  { chave: '{{primeiro_nome}}', descricao: 'Primeiro nome do cliente' },
+  { chave: '{{email}}', descricao: 'E-mail do cliente' },
+  { chave: '{{telefone}}', descricao: 'Telefone do cliente' },
+  { chave: '{{genero}}', descricao: 'Gênero do cliente' },
+  { chave: '{{cidade}}', descricao: 'Cidade do cliente' },
+  { chave: '{{estado}}', descricao: 'Estado do cliente' },
+  { chave: '{{data_nascimento}}', descricao: 'Data de nascimento do cliente' },
+  { chave: '{{data_ultima_compra}}', descricao: 'Data da última compra' },
+  { chave: '{{dias_sem_comprar}}', descricao: 'Dias desde a última compra' },
+  { chave: '{{valor_total_compras}}', descricao: 'Valor total das compras do cliente' },
+  { chave: '{{quantidade_pedidos}}', descricao: 'Quantidade total de pedidos do cliente' },
+  { chave: '{{data_cadastro}}', descricao: 'Data em que o cliente foi cadastrado' },
+  { chave: '{{nome_loja}}', descricao: 'Nome da loja ou empresa' },
+  //{ chave: '{{link_rastreamento}}', descricao: 'Link para rastrear o pedido (se aplicável)' },
+  { chave: '{{cupom_desconto}}', descricao: 'Cupom de desconto personalizado (se houver)' },
+];

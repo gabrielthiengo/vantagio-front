@@ -1,6 +1,8 @@
 export type AutomacaoProp = {
+  id?: number;
   nome?: string;
   descricao?: string;
+  isAtivo?: boolean;
   evento?: {
     tipoEvento: string;
     parametro: string;
@@ -11,5 +13,12 @@ export type AutomacaoProp = {
     assunto: string;
     mensagem: string;
     templateEmailId: number;
+    automacaoTemplateId?: number;
+    isUtilizaCupom: boolean;
+    codigoCupom: string;
+    valorDescontoCupom: number;
+    tipoDesconto: string;
+    isUsoIndividual: boolean;
+    valorMinimoCarrinho: number;
   };
 };

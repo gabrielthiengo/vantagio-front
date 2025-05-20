@@ -15,7 +15,7 @@ type CampoFiltro =
   | 'dataCadastro'
   | 'diasPedido';
 
-interface Filtro {
+export interface Filtro {
   campo: CampoFiltro;
   operador: Operador;
   valor: string;
@@ -34,10 +34,11 @@ const filtrosPermitidosPorEvento: Record<string, CampoFiltro[]> = {
 
 type FiltrosAutomacaoProps = {
   evento: string;
+  filtrosIn?: Filtro[];
   filtroSelecionado: (filtros: string) => void;
 };
 
-export function FiltrosAutomacao({ evento, filtroSelecionado }: FiltrosAutomacaoProps) {
+export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: FiltrosAutomacaoProps) {
   const [eventoSelecionado, setEventoSelecionado] = useState<string>(evento);
   const [filtros, setFiltros] = useState<Filtro[]>([]);
 
@@ -78,6 +79,12 @@ export function FiltrosAutomacao({ evento, filtroSelecionado }: FiltrosAutomacao
     setFiltros([]);
     setEventoSelecionado(evento);
   }, [evento]);
+
+  useEffect(() => {
+    if (filtrosIn) {
+      setFiltros(filtrosIn);
+    }
+  }, [filtrosIn]);
 
   return (
     <div>
