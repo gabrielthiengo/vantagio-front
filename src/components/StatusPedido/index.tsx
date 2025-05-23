@@ -16,5 +16,11 @@ const statusStyles: Record<Status, string> = {
 };
 
 export const StatusPedido: React.FC<Props> = ({ status }) => {
-  return <span className={`text-xs font-medium px-2 py-0.5 border rounded-md ${statusStyles[status]}`}>{status}</span>;
+  return (
+    <span
+      className={`w-full flex items-center justify-center text-xs font-medium px-2 py-0.5 border rounded-md ${statusStyles[status]}`}
+    >
+      {status}
+    </span>
+  );
 };

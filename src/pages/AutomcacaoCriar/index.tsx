@@ -20,6 +20,10 @@ import { Separator } from '@/components/ui/separator';
 import ListarClientesFiltroDinamico, {
   ClientesFiltroDinamicoResponse,
 } from '@/services/cliente/ListarClientesFiltroDinamico';
+import ListarTemplatesAutomacao, {
+  TemplateAutomacaoResponse,
+} from '@/services/templates-automacao/ListarTemplatesAutomacao';
+import { NumericFormat } from 'react-number-format';
 
 type AutomacaoProps = {
   automacao?: AutomacaoResponse;
@@ -31,7 +35,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
   const [form, setForm] = useState<AutomacaoProp>();
   const [isSaving, setIsSaving] = useState(false);
   const [isFetchingTest, setIsFetchingTest] = useState(false);
-  const [templates, setTemplates] = useState();
+  const [templates, setTemplates] = useState<TemplateAutomacaoResponse[]>([]);
   const [filtroCliente, setFiltroCliente] = useState<ClientesFiltroDinamicoResponse | null>(null);
 
   useEffect(() => {
@@ -52,15 +56,16 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
           templateEmailId: automacao.acao.template.templateId,
           tipoAcao: automacao.acao.tipoAcao,
           automacaoTemplateId: automacao.acao.template.id,
-          isUtilizaCupom: automacao.acao.isUtilizaCupom || false,
-          codigoCupom: automacao.acao.codigoCupom || '',
-          isUsoIndividual: automacao.acao.isUsoIndividual || false,
+          isUtilizaCupom: automacao.acao.isUtilizaCupom ?? false,
+          codigoCupom: automacao.acao.codigoCupom ?? '',
+          isUsoIndividual: automacao.acao.isUsoIndividual ?? false,
           tipoDesconto: 'percent',
-          valorDescontoCupom: automacao.acao.valorDescontoCupom || 0,
-          valorMinimoCarrinho: automacao.acao.valorMinimoCarrinho || 0,
+          valorDescontoCupom: automacao.acao.valorDescontoCupom ?? 0,
+          valorMinimoCarrinho: automacao.acao.valorMinimoCarrinho ?? 0,
         },
       });
     }
+    listarTemplatesAutomacao();
   }, []);
 
   const handleChange = (key: string, value: any) => {
@@ -159,7 +164,6 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
     setIsFetchingTest(true);
     ListarClientesFiltroDinamico.listar(JSON.parse(form?.evento?.parametro))
       .then((data) => {
-        console.log(data);
         if (data?.length === 0) {
           toast.warn('Nenhum cliente foi encontrado com base nos filtros informados');
         }
@@ -169,6 +173,14 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
       .finally(() => {
         setIsFetchingTest(false);
       });
+  };
+
+  const listarTemplatesAutomacao = () => {
+    ListarTemplatesAutomacao.listar().then((data) => {
+      if (data.length > 0) {
+        setTemplates(data);
+      }
+    });
   };
 
   return (
@@ -196,34 +208,12 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
                 <SelectValue placeholder="Selecione um evento" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALERTA_PROMOCAO">Alerta de promoção</SelectItem>
                 <SelectItem value="STATUS_PEDIDO">Alteração de status do pedido</SelectItem>
                 <SelectItem value="ANIVERSARIO">Aniversário do cliente</SelectItem>
-                <SelectItem value="ANIVERSARIO_EMPRESA">Aniversário da empresa</SelectItem>
                 <SelectItem value="BOAS_VINDAS">Boas vindas</SelectItem>
                 <SelectItem value="COMPRA_REALIZADA">Compra realizada</SelectItem>
-                <SelectItem value="EVENTO_PERSONALIZADO">Evento personalizado</SelectItem>
                 <SelectItem value="INATIVIDADE">Inatividade do cliente</SelectItem>
                 <SelectItem value="FEEDBACK">Solicitar feedback ao cliente</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="">
-            <Label>Template</Label>
-            <Select
-              disabled={!!form?.id}
-              value={String(form?.acao?.templateEmailId)}
-              onValueChange={(value) => handleChange('acao.templateEmailId', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione um evento" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1">Template padrão</SelectItem>
-                <SelectItem value="2">Template promoção relâmpago</SelectItem>
-                <SelectItem value="3">Template aniversariante</SelectItem>
-                <SelectItem value="4">Template boas vindas</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -236,11 +226,32 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
               onValueChange={(value) => handleChange('acao.tipoAcao', value)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Selecione o canal" />
+                <SelectValue placeholder="Selecione o tipo da ação" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="EMAIL">E-mail</SelectItem>
-                <SelectItem value="WHATSAPP">WhatsApp</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="">
+            <Label>Template</Label>
+            <Select
+              disabled={!!form?.id}
+              value={String(form?.acao?.templateEmailId)}
+              onValueChange={(value) => handleChange('acao.templateEmailId', value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Selecione um template" />
+              </SelectTrigger>
+              <SelectContent>
+                {templates.map((template) => {
+                  return (
+                    <SelectItem key={template.id} value={String(template.id)}>
+                      {template.nome}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
           </div>
@@ -262,7 +273,6 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
               <Checkbox
                 id="terms"
                 checked={form?.acao?.isUtilizaCupom}
-                disabled={!!form?.id}
                 onClick={() => {
                   handleChange('acao.isUtilizaCupom', Boolean(!form?.acao?.isUtilizaCupom));
 
@@ -306,7 +316,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
               <div>
                 <Label>Código do cupom</Label>
                 <Input
-                  disabled={!form?.acao?.isUtilizaCupom || !!form?.id}
+                  disabled={!form?.acao?.isUtilizaCupom}
                   value={form?.acao?.codigoCupom}
                   onChange={(e) => handleChange('acao.codigoCupom', e.target.value)}
                 />
@@ -316,16 +326,17 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
                 <Label>Total do desconto</Label>
                 <div className="flex items-center gap-2">
                   <Input
-                    disabled={!form?.acao?.isUtilizaCupom || !!form?.id}
+                    disabled={!form?.acao?.isUtilizaCupom}
                     value={form?.acao?.valorDescontoCupom}
                     type="number"
                     min={0}
                     max={100}
                     onChange={(e) => handleChange('acao.valorDescontoCupom', e.target.value)}
                   />
+
                   <div
                     className={`flex items-center justify-center rounded-md shadow h-9 px-4 border ${
-                      (!form?.acao?.isUtilizaCupom || !!form?.id) && 'cursor-not-allowed opacity-50'
+                      !form?.acao?.isUtilizaCupom && 'cursor-not-allowed opacity-50'
                     }`}
                   >
                     %
@@ -335,20 +346,27 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
 
               <div>
                 <Label>Valor mínimo compra</Label>
-                <Input
-                  disabled={!form?.acao?.isUtilizaCupom || !!form?.id}
-                  value={form?.acao?.valorMinimoCarrinho}
-                  type="text"
-                  min={0}
-                  max={100}
-                  onChange={(e) => handleChange('acao.valorMinimoCarrinho', e.target.value)}
+                <NumericFormat
+                  disabled={!form?.acao?.isUtilizaCupom}
+                  prefix="R$ "
+                  decimalSeparator=","
+                  thousandSeparator="."
+                  decimalScale={2}
+                  fixedDecimalScale
+                  value={Number(form?.acao?.valorMinimoCarrinho) || 0}
+                  allowNegative={false}
+                  placeholder="R$ 0,00"
+                  onValueChange={(value) => {
+                    handleChange('acao.valorMinimoCarrinho', value.floatValue);
+                  }}
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
 
               <div className="flex items-center mt-6 space-x-2 ">
                 <Checkbox
                   id="terms"
-                  disabled={!form?.acao?.isUtilizaCupom || !!form?.id}
+                  disabled={!form?.acao?.isUtilizaCupom}
                   checked={form?.acao?.isUsoIndividual}
                   onClick={() => {
                     handleChange('acao.isUsoIndividual', Boolean(!form?.acao?.isUsoIndividual));
@@ -388,23 +406,25 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
             />
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="terms"
-              checked={form?.isAtivo}
-              disabled={!form?.id}
-              onClick={() => {
-                handleChange('isAtivo', Boolean(!form?.isAtivo));
-              }}
-            />
+          {form?.id && (
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="terms"
+                checked={form?.isAtivo}
+                disabled={!form?.id}
+                onClick={() => {
+                  handleChange('isAtivo', Boolean(!form?.isAtivo));
+                }}
+              />
 
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Automação {form?.isAtivo ? 'ativa' : 'inativa'}
-            </label>
-          </div>
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Automação {form?.isAtivo ? 'ativa' : 'inativa'}
+              </label>
+            </div>
+          )}
         </div>
 
         <div className="w-full flex items-center justify-end gap-2 mt-5">

@@ -15,7 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { formatarData } from '@/lib/utils';
 import ListarAutomacoes, { AutomacaoResponse } from '@/services/automaoes/ListarAutomacoes';
 
-import { Boxes, Ellipsis, Pencil } from 'lucide-react';
+import { Boxes, Ellipsis, Pencil, PieChart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -96,6 +96,7 @@ export function Automacoes() {
                       <PopoverContent align="start" className="max-w-[auto] mr-5">
                         <Button
                           variant={'ghost'}
+                          className="flex items-center gap-1 text-primary"
                           onClick={() => {
                             setAutomacaoSelecionada(automacao);
 
@@ -104,6 +105,19 @@ export function Automacoes() {
                         >
                           <Pencil size={12} />
                           Atualizar
+                        </Button>
+
+                        <Button
+                          variant={'ghost'}
+                          className="flex items-center gap-1 text-orange-700"
+                          onClick={() => {
+                            setAutomacaoSelecionada(automacao);
+
+                            setToggleDialog(true);
+                          }}
+                        >
+                          <PieChart size={12} />
+                          Insigts
                         </Button>
                       </PopoverContent>
                     </Popover>

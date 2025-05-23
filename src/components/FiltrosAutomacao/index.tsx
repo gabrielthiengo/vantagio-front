@@ -3,33 +3,42 @@ import { Button } from '../ui/button';
 import { OctagonAlert, Plus, Trash2 } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { NumericFormat } from 'react-number-format';
 
-type Operador = 'IGUAL' | 'MAIOR_QUE' | 'MENOR_QUE';
+type Operador = '' | 'IGUAL' | 'MAIOR_QUE' | 'MENOR_QUE' | 'DIFERENTE';
 
 type CampoFiltro =
+  | ''
   | 'diasSemPedido'
   | 'cidade'
   | 'valorTotalPedido'
   | 'genero'
   | 'ticketMedio'
   | 'dataCadastro'
-  | 'diasPedido';
+  | 'diasPedido'
+  | 'dataAniversario'
+  | 'naoAplicaFiltros'
+  | 'estado'
+  | 'statusPedido';
 
 export interface Filtro {
   campo: CampoFiltro;
   operador: Operador;
   valor: string;
+  isDisabledOperador?: boolean;
+  isDisabledValor?: boolean;
+  placeholder?: string;
+  tipoInput?: string;
+  maxLength?: number;
 }
 
 const filtrosPermitidosPorEvento: Record<string, CampoFiltro[]> = {
-  BOAS_VINDAS: ['cidade', 'genero', 'diasPedido'],
-  INATIVIDADE: ['diasSemPedido'],
-  COMPRA_REALIZADA: ['valorTotalPedido', 'cidade', 'genero'],
-  STATUS_PEDIDO: ['cidade', 'genero'],
-  ANIVERSARIO: ['genero'],
-  ALERTA_PROMOCAO: ['cidade', 'diasSemPedido', 'ticketMedio', 'diasPedido'],
-  EVENTO_PERSONALIZADO: ['cidade', 'valorTotalPedido', 'genero'],
-  FEEDBACK: ['cidade', 'valorTotalPedido', 'diasPedido', 'genero'],
+  BOAS_VINDAS: ['naoAplicaFiltros', 'cidade', 'estado', 'genero', 'diasPedido'],
+  INATIVIDADE: ['diasSemPedido', 'cidade', 'estado'],
+  ANIVERSARIO: ['dataAniversario', 'cidade', 'estado', 'genero'],
+  COMPRA_REALIZADA: ['valorTotalPedido', 'cidade', 'estado', 'genero'],
+  STATUS_PEDIDO: ['statusPedido', 'cidade', 'estado', 'genero'],
+  FEEDBACK: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
 };
 
 type FiltrosAutomacaoProps = {
@@ -38,27 +47,55 @@ type FiltrosAutomacaoProps = {
   filtroSelecionado: (filtros: string) => void;
 };
 
+type ResponseFunction = {
+  valor: string;
+  operador: Operador;
+  isDisabledOperador?: boolean;
+  isDisabledValor?: boolean;
+  placeholder?: string;
+  tipoInput?: string;
+  maxLength?: number;
+};
+
 export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: FiltrosAutomacaoProps) {
   const [eventoSelecionado, setEventoSelecionado] = useState<string>(evento);
   const [filtros, setFiltros] = useState<Filtro[]>([]);
+  const [operadores, setOperadores] = useState<Operador[]>([]);
 
   const camposDisponiveis = filtrosPermitidosPorEvento[eventoSelecionado] || [];
 
   const handleAdicionarFiltro = () => {
     if (camposDisponiveis.length === 0) return;
-    setFiltros([...filtros, { campo: camposDisponiveis[0], operador: 'IGUAL', valor: '' }]);
-    handleSalvar([...filtros, { campo: camposDisponiveis[0], operador: 'IGUAL', valor: '' }]);
+    setFiltros([...filtros, { campo: '', operador: '', valor: '' }]);
+    handleSalvar([...filtros, { campo: '', operador: '', valor: '' }]);
   };
 
   const handleAlterarFiltro = (index: number, campo: keyof Filtro, valor: string) => {
+    console.log({ valor, campo });
     const novosFiltros = [...filtros];
     if (campo === 'campo' || campo === 'operador' || campo === 'valor') {
       novosFiltros[index] = {
         ...novosFiltros[index],
         [campo]: valor,
+        valor: campo === 'campo' ? preencherValorAutomatico(valor).valor : campo === 'valor' ? valor : '',
+        operador:
+          campo === 'campo'
+            ? preencherValorAutomatico(valor).operador
+            : campo === 'operador'
+            ? (valor as Operador)
+            : novosFiltros[index].operador,
+        isDisabledValor: campo === 'campo' ? preencherValorAutomatico(valor).isDisabledValor : false,
+        isDisabledOperador: campo === 'campo' ? preencherValorAutomatico(valor).isDisabledOperador : false,
+        tipoInput: campo === 'campo' ? preencherValorAutomatico(valor).tipoInput : novosFiltros[index].tipoInput,
+        placeholder: campo === 'campo' ? preencherValorAutomatico(valor).placeholder : novosFiltros[index].placeholder,
+        maxLength: campo === 'campo' ? preencherValorAutomatico(valor).maxLength : novosFiltros[index].maxLength,
       };
     }
     setFiltros(novosFiltros);
+
+    if (campo === 'campo') {
+      preencherOperadores(valor);
+    }
 
     handleSalvar(novosFiltros);
   };
@@ -76,15 +113,104 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
   };
 
   useEffect(() => {
-    setFiltros([]);
-    setEventoSelecionado(evento);
-  }, [evento]);
-
-  useEffect(() => {
     if (filtrosIn) {
+      setOperadores(['IGUAL', 'MAIOR_QUE', 'MENOR_QUE', 'DIFERENTE']);
       setFiltros(filtrosIn);
     }
   }, [filtrosIn]);
+
+  useEffect(() => {
+    setEventoSelecionado(evento);
+
+    setFiltros([]);
+  }, [evento]);
+
+  const preencherOperadores = (opcao: string) => {
+    switch (opcao) {
+      case 'dataAniversario':
+        setOperadores(['IGUAL']);
+        break;
+
+      case 'genero':
+        setOperadores(['IGUAL', 'DIFERENTE']);
+        break;
+
+      case 'cidade':
+        setOperadores(['IGUAL', 'DIFERENTE']);
+        break;
+
+      case 'estado':
+        setOperadores(['IGUAL', 'DIFERENTE']);
+        break;
+
+      case 'statusPedido':
+        setOperadores(['IGUAL', 'DIFERENTE']);
+        break;
+
+      default:
+        setOperadores(['IGUAL', 'MAIOR_QUE', 'MENOR_QUE', 'DIFERENTE']);
+    }
+  };
+
+  const preencherValorAutomatico = (opcao: string): ResponseFunction => {
+    let response: ResponseFunction = {
+      isDisabledValor: false,
+      isDisabledOperador: false,
+      operador: 'IGUAL',
+      valor: '',
+      placeholder: 'Valor',
+      tipoInput: 'text',
+      maxLength: 50,
+    };
+
+    switch (opcao) {
+      case 'dataAniversario':
+        response.isDisabledValor = true;
+        response.isDisabledOperador = true;
+        response.operador = 'IGUAL';
+        response.valor = 'MES_ATUAL';
+
+        return response;
+
+      case 'valorTotalPedido':
+        response.tipoInput = 'currency';
+        return response;
+
+      case 'cidade':
+        response.placeholder = 'Ex: Belo Horizonte';
+        return response;
+
+      case 'estado':
+        response.placeholder = 'Ex: MG';
+        response.maxLength = 2;
+        return response;
+
+      case 'genero':
+        response.placeholder = 'Ex: Feminino';
+        return response;
+
+      case 'statusPedido':
+        response.placeholder = 'Ex: CONCLUIDO';
+        return response;
+
+      case 'diasSemPedido':
+        response.placeholder = 'Ex: 20 dias';
+        response.tipoInput = 'number';
+        return response;
+
+      case 'diasPedido':
+        response.placeholder = 'Ex: 20 dias';
+        response.tipoInput = 'number';
+        return response;
+
+      case 'ticketMedio':
+        response.tipoInput = 'currency';
+        return response;
+
+      default:
+        return response;
+    }
+  };
 
   return (
     <div>
@@ -101,7 +227,13 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
       <div className="mt-3">
         {filtros.map((filtro, index) => (
           <div key={index} className="grid grid-cols-[1fr_1fr_1fr_60px] gap-2 mb-2 items-center">
-            <Select value={filtro.campo} onValueChange={(e) => handleAlterarFiltro(index, 'campo', e)}>
+            <Select
+              name="filtro-automacao"
+              value={filtro.campo}
+              onValueChange={(e) => {
+                handleAlterarFiltro(index, 'campo', e);
+              }}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
@@ -121,30 +253,66 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
                       ? 'Data do cadastro'
                       : campo === 'diasPedido'
                       ? 'Dias com pedido'
+                      : campo === 'dataAniversario'
+                      ? 'Data do aniversário'
+                      : campo === 'naoAplicaFiltros'
+                      ? 'Não se aplica filtros'
+                      : campo === 'statusPedido'
+                      ? 'Status do pedido'
+                      : campo === 'estado'
+                      ? 'Estado'
                       : 'Gênero'}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select value={filtro.operador} onValueChange={(e) => handleAlterarFiltro(index, 'operador', e)}>
+            <Select
+              disabled={filtro.isDisabledOperador}
+              value={filtro.operador}
+              onValueChange={(e) => handleAlterarFiltro(index, 'operador', e)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Selecione" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="IGUAL">Igual</SelectItem>
-                <SelectItem value="MAIOR_QUE">Maior que</SelectItem>
-                <SelectItem value="MENOR_QUE">Menor que</SelectItem>
+                {operadores.map((operador) => {
+                  return (
+                    <SelectItem key={operador} value={operador}>
+                      {operador.replace('_', ' ')}
+                    </SelectItem>
+                  );
+                })}
               </SelectContent>
             </Select>
 
-            <Input
-              className="border p-1 rounded"
-              type="text"
-              placeholder="Valor"
-              value={filtro.valor}
-              onChange={(e) => handleAlterarFiltro(index, 'valor', e.target.value)}
-            />
+            {filtro.tipoInput === 'currency' ? (
+              <NumericFormat
+                disabled={filtro.isDisabledValor}
+                prefix="R$ "
+                decimalSeparator=","
+                thousandSeparator="."
+                decimalScale={2}
+                fixedDecimalScale
+                value={Number(filtro.valor) || 0}
+                allowNegative={false}
+                placeholder="R$ 0,00"
+                onValueChange={(value) => {
+                  handleAlterarFiltro(index, 'valor', String(value.floatValue));
+                }}
+                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              />
+            ) : (
+              <Input
+                className="border p-1 rounded uppercase"
+                disabled={filtro.isDisabledValor}
+                type={filtro.tipoInput ?? 'text'}
+                maxLength={filtro.maxLength}
+                placeholder={filtro.placeholder ?? 'Valor'}
+                value={filtro.valor}
+                onChange={(e) => handleAlterarFiltro(index, 'valor', e.target.value.toUpperCase())}
+              />
+            )}
 
             <Button
               variant={'outline'}

@@ -11,7 +11,7 @@ interface IPageHeaderProps {
 
 export const PageHeader = (props: IPageHeaderProps) => {
   return (
-    <Card className="rounded mb-5">
+    <Card className="rounded mb-5 shadow-none border border-gray-300">
       <CardHeader className="page-header">
         {props.breadcrumb && <div>{props.breadcrumb}</div>}
         <div className="flex gap-3">

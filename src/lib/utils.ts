@@ -48,7 +48,11 @@ export function formatarEndereco(endereco: EnderecoParams): string {
   return partes.join(', ');
 }
 
-export function formatarData(dataIso: string): string {
+export function formatarData(dataIso: string, onlyDate?: boolean): string {
+  if (dataIso === 'null') {
+    return '';
+  }
+
   const data = new Date(dataIso);
 
   const dia = String(data.getDate()).padStart(2, '0');
@@ -57,5 +61,29 @@ export function formatarData(dataIso: string): string {
   const horas = String(data.getHours()).padStart(2, '0');
   const minutos = String(data.getMinutes()).padStart(2, '0');
 
-  return `${dia}/${mes}/${ano} ${horas}:${minutos}`;
+  return `${dia}/${mes}/${ano} ${!onlyDate ? horas + ':' + minutos : ''}`;
+}
+
+export function formatarCPF(cpf: string | null): string {
+  if (!cpf) return '';
+
+  return cpf
+    .replace(/\D/g, '')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+}
+
+export function formatarTelefone(telefone: string | null): string {
+  if (!telefone) return '';
+
+  const numeros = telefone.replace(/\D/g, '');
+
+  if (numeros.length === 11) {
+    return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+  } else if (numeros.length === 10) {
+    return numeros.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+  }
+
+  return telefone;
 }
