@@ -33,7 +33,7 @@ function App() {
           />
 
           <Route
-            path="/pedidos"
+            path="/pedido"
             element={
               <ProtectedLayout>
                 <Pedidos />
@@ -51,7 +51,7 @@ function App() {
           />
 
           <Route
-            path="/automacoes"
+            path="/automacao"
             element={
               <ProtectedLayout>
                 <Automacoes />
@@ -69,7 +69,7 @@ function App() {
           />
 
           <Route
-            path="/campanhas"
+            path="/campanha"
             element={
               <ProtectedLayout>
                 <Campanhas />
@@ -78,7 +78,7 @@ function App() {
           />
 
           <Route
-            path="/clientes"
+            path="/cliente"
             element={
               <ProtectedLayout>
                 <Clientes />

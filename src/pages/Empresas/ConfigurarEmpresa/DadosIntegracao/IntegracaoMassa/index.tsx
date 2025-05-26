@@ -8,7 +8,7 @@ export const IntegracaoMassa = ({ empresaId }: { empresaId: number }) => {
   return (
     <div className="flex flex-col gap-1">
       {!isLoading ? (
-        <div>
+        <div className="flex flex-col gap-2">
           {integracoes.map((integracao) => {
             return (
               <Card key={integracao.id} className="p-2 rounded flex items-center justify-between">

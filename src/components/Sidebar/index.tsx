@@ -1,16 +1,4 @@
-import {
-  BarChart3,
-  Boxes,
-  Cog,
-  FolderCog,
-  HomeIcon,
-  PackageSearch,
-  ShoppingBasket,
-  Users,
-  UserSearch,
-  Building2,
-  LineChart,
-} from 'lucide-react';
+import { BarChart3, Boxes, Cog, HomeIcon, ShoppingBasket, Users, Building2, LineChart } from 'lucide-react';
 import { SidebarItem } from '../SidebarItem';
 import logo from '@/assets/logo-vantagio.jpeg';
 import { UserInfo } from '../UserInfo';
@@ -39,27 +27,27 @@ export const Sidebar = () => {
         <BarChart3 size={18} />
       </SidebarItem>
 
-      <SidebarItem title="Pedidos" page="/pedidos">
+      <SidebarItem title="Pedidos" page="/pedido">
         <ShoppingBasket size={18} />
       </SidebarItem>
 
       <div className="text-xs text-gray-400 font-semibold tracking-wider mb-2">CADASTROS</div>
 
-      <SidebarItem title="Clientes" page="/clientes">
+      <SidebarItem title="Clientes" page="/cliente">
         <Users size={18} />
       </SidebarItem>
 
-      <SidebarItem title="Campanhas" page="/campanhas">
+      <SidebarItem title="Campanhas" page="/campanha">
         <LineChart size={18} />
       </SidebarItem>
 
-      <SidebarItem title="Automações" page="/automacoes">
+      <SidebarItem title="Automações" page="/automacao">
         <Boxes size={18} />
       </SidebarItem>
 
       <div className="text-xs text-gray-400 font-semibold tracking-wider mb-2">EMPRESA</div>
 
-      <SidebarItem title="Configurações" page="/configurações">
+      <SidebarItem title="Configurações" page="/configuraçao">
         <Cog size={18} />
       </SidebarItem>
 

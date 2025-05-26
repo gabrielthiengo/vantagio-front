@@ -31,7 +31,7 @@ export function TicketMedioXNumeroVendas() {
       numerovendas: 0,
     },
   ]);
-  const [variacao, setVariacao] = useState([{ mes: '', variacao: '', tendencia: '' }]);
+  const [variacao, setVariacao] = useState([{ mes: 'Atual', variacao: '0%', tendencia: 'Estabilidade' }]);
   const [isLoading, setIsLoading] = useState(true);
 
   async function listarDados() {
@@ -58,7 +58,9 @@ export function TicketMedioXNumeroVendas() {
         });
       }
 
-      setVariacao(variacoes);
+      if (variacoes.length > 0) {
+        setVariacao(variacoes);
+      }
 
       setDados(data);
 
@@ -133,28 +135,30 @@ export function TicketMedioXNumeroVendas() {
             </ChartContainer>
           </CardContent>
           <CardFooter className="p-3">
-            <div className="flex gap-2">
-              {variacao[variacao.length - 1].tendencia === 'Crescimento' && (
-                <div className="flex items-center gap-2">
-                  Crescimento de {variacao[variacao.length - 1].variacao} neste mês
-                  <TrendingUp className={`h-4 w-4 'text-green-500`} />
-                </div>
-              )}
+            {variacao.length > 0 && (
+              <div className="flex gap-2">
+                {variacao[variacao.length - 1].tendencia === 'Crescimento' && (
+                  <div className="flex items-center gap-2">
+                    Crescimento de {variacao[variacao.length - 1].variacao} neste mês
+                    <TrendingUp className={`h-4 w-4 'text-green-500`} />
+                  </div>
+                )}
 
-              {variacao[variacao.length - 1].tendencia === 'Queda' && (
-                <div className="flex items-center gap-2">
-                  Queda de {variacao[variacao.length - 1].variacao} neste mês
-                  <TrendingDown className={`h-4 w-4 'text-green-500`} />
-                </div>
-              )}
+                {variacao[variacao.length - 1].tendencia === 'Queda' && (
+                  <div className="flex items-center gap-2">
+                    Queda de {variacao[variacao.length - 1].variacao} neste mês
+                    <TrendingDown className={`h-4 w-4 'text-green-500`} />
+                  </div>
+                )}
 
-              {variacao[variacao.length - 1].tendencia === 'Estabilidade' && (
-                <div className="flex items-center gap-2 text-sm font-medium leading-none">
-                  Mantendo estável neste mês
-                  <MoveRight className="h-4 w-4 text-orange-500" />
-                </div>
-              )}
-            </div>
+                {variacao[variacao.length - 1].tendencia === 'Estabilidade' && (
+                  <div className="flex items-center gap-2 text-sm font-medium leading-none">
+                    Mantendo estável neste mês
+                    <MoveRight className="h-4 w-4 text-orange-500" />
+                  </div>
+                )}
+              </div>
+            )}
           </CardFooter>
         </Card>
       )}

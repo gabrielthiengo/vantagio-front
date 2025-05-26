@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { IntegracaoMassa } from './IntegracaoMassa';
+import WebHooks from './Webhooks';
 
 export const DadosIntegracao = ({ empresaId }: { empresaId: number }) => {
   return (
@@ -18,6 +19,8 @@ export const DadosIntegracao = ({ empresaId }: { empresaId: number }) => {
           <span className="text-sm text-gray-800">Webhooks</span>
 
           <Separator className="mt-2 mb-2" />
+
+          <WebHooks empresaId={empresaId} />
         </Card>
       </div>
 

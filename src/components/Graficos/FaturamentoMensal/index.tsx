@@ -26,7 +26,7 @@ export function FaturamentoMensal() {
       month_number: 0,
     },
   ]);
-  const [variacao, setVariacao] = useState([{ mes: '', variacao: '', tendencia: '' }]);
+  const [variacao, setVariacao] = useState([{ mes: 'Atual', variacao: '0%', tendencia: 'Estabilidade' }]);
   const [isLoading, setIsLoading] = useState(true);
 
   async function listarDados() {
@@ -53,7 +53,9 @@ export function FaturamentoMensal() {
         });
       }
 
-      setVariacao(variacoes);
+      if (variacoes.length > 0) {
+        setVariacao(variacoes);
+      }
 
       setDados(data);
       setIsLoading(false);
@@ -103,14 +105,16 @@ export function FaturamentoMensal() {
             </ChartContainer>
           </CardContent>
           <CardFooter className="flex-col items-start gap-2 text-sm p-3">
-            <div className="flex gap-2 font-medium leading-none text-sm">
-              {variacao[variacao.length - 1].tendencia} de {variacao[variacao.length - 1].variacao} neste mês
-              <TrendingUp
-                className={`h-4 w-4 ${
-                  variacao[variacao.length - 1].tendencia === 'Crescimento' ? 'text-green-500' : 'text-red-500'
-                }`}
-              />
-            </div>
+            {variacao.length > 0 && (
+              <div className="flex gap-2 font-medium leading-none text-sm">
+                {variacao[variacao.length - 1].tendencia} de {variacao[variacao.length - 1].variacao} neste mês
+                <TrendingUp
+                  className={`h-4 w-4 ${
+                    variacao[variacao.length - 1].tendencia === 'Crescimento' ? 'text-green-500' : 'text-red-500'
+                  }`}
+                />
+              </div>
+            )}
           </CardFooter>
         </Card>
       )}

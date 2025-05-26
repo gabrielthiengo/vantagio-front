@@ -434,7 +434,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
               className=""
               disabled={isSaving || isFetchingTest}
               onClick={() => {
-                navigate('/automacoes');
+                navigate('/automacao');
               }}
             >
               Cancelar e voltar

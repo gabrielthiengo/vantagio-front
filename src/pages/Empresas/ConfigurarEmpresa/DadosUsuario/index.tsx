@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useDadosUsuario } from './useConfigurarEmpresa';
 import { CriarUsuario } from './CriarUsuario';
 import { Skeleton } from '@/components/ui/skeleton';
+import CardFeedback from '@/components/CardFeedback';
 
 export const DadosUsuario = ({ empresaId }: { empresaId: number }) => {
   const { isLoading, usuarios } = useDadosUsuario(empresaId || 0);
@@ -37,6 +38,8 @@ export const DadosUsuario = ({ empresaId }: { empresaId: number }) => {
               ))}
             </TableBody>
           </Table>
+
+          {usuarios?.length === 0 && <CardFeedback text="Nenhum usuário encontrado" />}
         </Card>
       ) : (
         <div>

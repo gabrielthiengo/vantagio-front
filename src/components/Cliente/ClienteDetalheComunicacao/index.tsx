@@ -15,9 +15,15 @@ import CriarMensagemCliente from '@/services/mensagem-cliente/CriarMensagemClien
 
 type ClienteDetalheComunicacaoProps = {
   cliente: RecomendacoesData;
+  esconderPedidos?: boolean;
+  callback?: () => void;
 };
 
-export default function ClienteDetalheComunicacao({ cliente }: ClienteDetalheComunicacaoProps) {
+export default function ClienteDetalheComunicacao({
+  cliente,
+  esconderPedidos,
+  callback,
+}: ClienteDetalheComunicacaoProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [dadosCliente, setDadosCliente] = useState<DadosClienteComunicacao | null>(null);
@@ -61,6 +67,10 @@ export default function ClienteDetalheComunicacao({ cliente }: ClienteDetalheCom
       })
       .finally(() => {
         setIsSendingMessage(false);
+
+        if (callback) {
+          callback();
+        }
       });
   };
 
@@ -180,59 +190,61 @@ export default function ClienteDetalheComunicacao({ cliente }: ClienteDetalheCom
             )}
           </Card>
 
-          <Card className="flex-1 flex flex-col gap-2 shadow-none border-gray-300 rounded-md p-4">
-            <span className="text-xs text-gray-600">Últimas compras:</span>
+          {!esconderPedidos && (
+            <Card className="flex-1 flex flex-col gap-2 shadow-none border-gray-300 rounded-md p-4">
+              <span className="text-xs text-gray-600">Últimas compras:</span>
 
-            {dadosCliente?.pedidos?.map((pedido) => {
-              return (
-                <Card key={pedido.id} className="flex flex-col p-4 shadow-none border-gray-300 rounded-md mb-1">
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <label className="text-xs text-gray-600">Valor total: </label>
-                      <span>{formatarCurrency(Number(pedido.valorTotal))}</span>
+              {dadosCliente?.pedidos?.map((pedido) => {
+                return (
+                  <Card key={pedido.id} className="flex flex-col p-4 shadow-none border-gray-300 rounded-md mb-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <label className="text-xs text-gray-600">Valor total: </label>
+                        <span>{formatarCurrency(Number(pedido.valorTotal))}</span>
+                      </div>
+
+                      <div className="flex flex-col">
+                        <label className="text-xs text-gray-600">Data do pedido: </label>
+                        <span>{formatarData(pedido.dataCadastroExterno)}</span>
+                      </div>
+
+                      <div className="flex flex-col">
+                        <label className="text-xs text-gray-600">Status: </label>
+                        <StatusPedido status={pedido.status as Status} />
+                      </div>
                     </div>
 
-                    <div className="flex flex-col">
-                      <label className="text-xs text-gray-600">Data do pedido: </label>
-                      <span>{formatarData(pedido.dataCadastroExterno)}</span>
+                    <div className="mt-1">
+                      <label className=" text-gray-600 ">Produtos: </label>
+
+                      <Separator className="mt-1 mb-1 bg-gray-300" />
+
+                      {pedido.produtos.map((produto) => {
+                        return (
+                          <div className="grid grid-cols-[2fr_1fr_1fr] gap-1">
+                            <div className="flex flex-col mb-1">
+                              <label className="text-xs text-gray-600">Descrição: </label>
+                              <span>{produto.nomeProduto}</span>
+                            </div>
+
+                            <div className="flex flex-col mb-1 text-center">
+                              <label className="text-xs text-gray-600">Quantidade: </label>
+                              <span>{produto.quantidade}</span>
+                            </div>
+
+                            <div className="flex flex-col mb-1 text-right">
+                              <label className="text-xs text-gray-600">Valor total: </label>
+                              <span>{formatarCurrency(Number(produto.valorTotal))}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-
-                    <div className="flex flex-col">
-                      <label className="text-xs text-gray-600">Status: </label>
-                      <StatusPedido status={pedido.status as Status} />
-                    </div>
-                  </div>
-
-                  <div className="mt-1">
-                    <label className=" text-gray-600 ">Produtos: </label>
-
-                    <Separator className="mt-1 mb-1 bg-gray-300" />
-
-                    {pedido.produtos.map((produto) => {
-                      return (
-                        <div className="grid grid-cols-[2fr_1fr_1fr] gap-1">
-                          <div className="flex flex-col mb-1">
-                            <label className="text-xs text-gray-600">Descrição: </label>
-                            <span>{produto.nomeProduto}</span>
-                          </div>
-
-                          <div className="flex flex-col mb-1 text-center">
-                            <label className="text-xs text-gray-600">Quantidade: </label>
-                            <span>{produto.quantidade}</span>
-                          </div>
-
-                          <div className="flex flex-col mb-1 text-right">
-                            <label className="text-xs text-gray-600">Valor total: </label>
-                            <span>{formatarCurrency(Number(produto.valorTotal))}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </Card>
-              );
-            })}
-          </Card>
+                  </Card>
+                );
+              })}
+            </Card>
+          )}
         </div>
       )}
 

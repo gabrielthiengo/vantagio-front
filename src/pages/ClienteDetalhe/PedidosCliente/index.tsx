@@ -97,7 +97,7 @@ export default function PedidosCliente({ clienteId }: PedidosClienteProps) {
             })}
           </Accordion>
 
-          {pedidos.length > 0 && (
+          {total > 0 && (
             <Pagination className="justify-end mt-4">
               <PaginationContent>
                 <PaginationItem>
@@ -119,7 +119,7 @@ export default function PedidosCliente({ clienteId }: PedidosClienteProps) {
         </div>
       )}
 
-      {pedidos.length === 0 && <CardFeedback text="Nenhum pedido encontrado" />}
+      {total === 0 && <CardFeedback text="Nenhum pedido encontrado" />}
 
       {isFetching && <LoadingComponent />}
     </div>
