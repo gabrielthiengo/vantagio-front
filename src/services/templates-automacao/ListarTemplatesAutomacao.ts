@@ -4,9 +4,7 @@ export type TemplateAutomacaoResponse = {
   id: number;
   tenantId: number;
   nome: string;
-  header: string;
-  content: string;
-  footer: string;
+  descricao: string;
   createdAt: Date;
   updatedAt: Date;
 };

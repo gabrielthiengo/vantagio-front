@@ -1,4 +1,4 @@
-import { BarChart3, Boxes, Cog, HomeIcon, ShoppingBasket, Users, Building2, LineChart } from 'lucide-react';
+import { BarChart3, Boxes, Cog, HomeIcon, ShoppingBasket, Users, Building2, LineChart, LogOut } from 'lucide-react';
 import { SidebarItem } from '../SidebarItem';
 import logo from '@/assets/logo-vantagio.jpeg';
 import { UserInfo } from '../UserInfo';
@@ -56,6 +56,10 @@ export const Sidebar = () => {
           <Building2 size={18} />
         </SidebarItem>
       )}
+
+      <SidebarItem title="Sair" page="/sair">
+        <LogOut size={18} />
+      </SidebarItem>
     </div>
   );
 };

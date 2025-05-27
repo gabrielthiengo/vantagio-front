@@ -37,7 +37,7 @@ const filtrosPermitidosPorEvento: Record<string, CampoFiltro[]> = {
   INATIVIDADE: ['diasSemPedido', 'cidade', 'estado'],
   ANIVERSARIO: ['dataAniversario', 'cidade', 'estado', 'genero'],
   COMPRA_REALIZADA: ['valorTotalPedido', 'cidade', 'estado', 'genero'],
-  STATUS_PEDIDO: ['statusPedido', 'cidade', 'estado', 'genero'],
+  STATUS_PEDIDO: ['statusPedido'],
   FEEDBACK: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
 };
 

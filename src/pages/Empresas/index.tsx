@@ -15,6 +15,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { CriarEmpresa } from './CriarEmpresa';
 import { useNavigate } from 'react-router-dom';
+import { Status } from '@/components/Status';
 
 export const Empresas = () => {
   const navigate = useNavigate();
@@ -44,7 +45,9 @@ export const Empresas = () => {
                   <TableCell>{empresa.nomeFantasia}</TableCell>
                   <TableCell>{empresa.cnpj}</TableCell>
                   <TableCell>{empresa.sistema}</TableCell>
-                  <TableCell className="text-center">{empresa.isAtivo ? 'Ativa' : 'Inativa'}</TableCell>
+                  <TableCell className="text-center">
+                    <Status isActive={empresa.isAtivo} />
+                  </TableCell>
                   <TableCell className="text-center">
                     <Button
                       onClick={() => {

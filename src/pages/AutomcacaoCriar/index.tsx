@@ -122,7 +122,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
 
           toast.success('Automação criada com sucesso.');
 
-          navigate('/automacoes');
+          navigate('/automacao');
         })
         .catch((err) => {
           toast.error(err);
@@ -210,7 +210,6 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
               <SelectContent>
                 <SelectItem value="STATUS_PEDIDO">Alteração de status do pedido</SelectItem>
                 <SelectItem value="ANIVERSARIO">Aniversário do cliente</SelectItem>
-                <SelectItem value="BOAS_VINDAS">Boas vindas</SelectItem>
                 <SelectItem value="COMPRA_REALIZADA">Compra realizada</SelectItem>
                 <SelectItem value="INATIVIDADE">Inatividade do cliente</SelectItem>
                 <SelectItem value="FEEDBACK">Solicitar feedback ao cliente</SelectItem>
@@ -238,7 +237,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
             <Label>Template</Label>
             <Select
               disabled={!!form?.id}
-              value={String(form?.acao?.templateEmailId)}
+              value={String(form?.acao?.templateEmailId ?? '')}
               onValueChange={(value) => handleChange('acao.templateEmailId', value)}
             >
               <SelectTrigger>
@@ -247,9 +246,14 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
               <SelectContent>
                 {templates.map((template) => {
                   return (
-                    <SelectItem key={template.id} value={String(template.id)}>
-                      {template.nome}
-                    </SelectItem>
+                    <div>
+                      <SelectItem key={template.id} value={String(template.id)}>
+                        <span>{template.nome}</span>
+                      </SelectItem>
+                      <span className="pl-2 text-xs text-gray-400">{template.descricao}</span>
+
+                      <Separator />
+                    </div>
                   );
                 })}
               </SelectContent>

@@ -20,14 +20,15 @@ export const IntegracaoMassa = ({ empresaId }: { empresaId: number }) => {
                 <div className="flex flex-col">
                   <span className="text-xs text-gray-700">Página atual</span>
                   <span className="text-sm text-gray-800">
-                    {integracao.pagProximaBusca === null ? 0 : integracao.pagProximaBusca}
+                    {integracao.pagProximaBusca === null ? 0 : integracao.pagProximaBusca} de{' '}
+                    {integracao.totalPaginas === null ? 0 : integracao.totalPaginas}
                   </span>
                 </div>
 
                 <div className="flex flex-col justify-end">
-                  <span className="text-xs text-gray-700">Total de páginas</span>
+                  <span className="text-xs text-gray-700">Total reg/página</span>
                   <span className="text-sm text-gray-800">
-                    {integracao.totalPaginas === null ? 0 : integracao.totalPaginas}
+                    {integracao.totalRegistrosPagina === null ? 0 : integracao.totalRegistrosPagina}
                   </span>
                 </div>
 

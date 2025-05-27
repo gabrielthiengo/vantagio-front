@@ -1,3 +1,4 @@
+import { useAuth } from '@/context/AuthProvider/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 type SidebarProps = {
@@ -7,10 +8,18 @@ type SidebarProps = {
 };
 
 export const SidebarItem = ({ title, page, children }: SidebarProps) => {
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const path = window.location.pathname;
 
   function onNavigate() {
+    if (page === '/sair') {
+      logout();
+      navigate('/authenticate');
+
+      return;
+    }
+
     navigate(page);
   }
 
