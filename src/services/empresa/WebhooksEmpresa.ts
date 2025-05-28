@@ -22,12 +22,27 @@ class WebhooksEmpresa {
     return response.data;
   }
 
-  async list(empresaId: number) {
+  async list(empresaId: number, perPage: number) {
     const response = await Api.get('/empresa/webhooks', {
       params: {
         empresaId,
+        perPage,
       },
     });
+
+    return response.data;
+  }
+
+  async createWebhooks(empresaId: number) {
+    const response = await Api.post(
+      '/empresa/webhooks/criar',
+      {},
+      {
+        params: {
+          empresaId,
+        },
+      },
+    );
 
     return response.data;
   }

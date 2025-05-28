@@ -1,21 +1,40 @@
+import CardFeedback from '@/components/CardFeedback';
 import LoadingComponent from '@/components/LoadingComponent';
+import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatarData } from '@/lib/utils';
 import WebhooksEmpresa, { WebhooksEmpresaRes } from '@/services/empresa/WebhooksEmpresa';
-import { Info } from 'lucide-react';
+import { Info, LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function WebHooks({ empresaId }: { empresaId: number }) {
   const [webHooks, setWebHooks] = useState<WebhooksEmpresaRes[]>([]);
   const [isFetching, setIsFetching] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [perPage, setPerPage] = useState(50);
 
   const listarWebhooks = () => {
-    WebhooksEmpresa.list(empresaId)
+    WebhooksEmpresa.list(empresaId, perPage)
       .then((data) => {
         setWebHooks(data);
       })
       .finally(() => {
         setIsFetching(false);
+      });
+  };
+
+  const criarWebhooksWoocommerce = () => {
+    setIsCreating(true);
+
+    WebhooksEmpresa.createWebhooks(empresaId)
+      .then((response) => {
+        toast.success(response.message);
+        setPerPage(60);
+        listarWebhooks();
+      })
+      .finally(() => {
+        setIsCreating(false);
       });
   };
 
@@ -25,6 +44,18 @@ export default function WebHooks({ empresaId }: { empresaId: number }) {
 
   return (
     <div>
+      {webHooks.length === 0 && !isFetching && (
+        <Button onClick={() => criarWebhooksWoocommerce()} disabled={isCreating} variant={'ghost'}>
+          {!isCreating ? (
+            'Criar webhooks'
+          ) : (
+            <div className="flex items-center gap-1">
+              <LoaderCircle className="animate-spin" size={14} /> Criando webhooks
+            </div>
+          )}
+        </Button>
+      )}
+
       {!isFetching && (
         <div className="flex flex-col gap-2">
           {webHooks.map((webhook) => {
@@ -70,6 +101,8 @@ export default function WebHooks({ empresaId }: { empresaId: number }) {
           })}
         </div>
       )}
+
+      {webHooks.length === 0 && !isFetching && <CardFeedback text="Nenhum webhook cadastrado" />}
 
       {isFetching && <LoadingComponent />}
     </div>
