@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES6",
     "module": "commonjs",
-    "lib": ["dom", "es2017"],
+    "target": "ES2021", // antes era es2018
+    "lib": ["ES2021", "dom"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true,

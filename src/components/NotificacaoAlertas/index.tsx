@@ -1,4 +1,4 @@
-import { AlertCircle, TrendingDown, TrendingUp } from 'lucide-react';
+import { AlertCircle, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';

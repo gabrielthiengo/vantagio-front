@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/pagination';
 import { formatarData } from '@/lib/utils';
 import ListarAutomacoesCliente from '@/services/cliente/ListarAutomacoesCliente';
-import { AutomacoesClienteRes } from '@/services/cliente/ListarPedidosCliente';
+import { AutomacoesClienteRes } from '@/services/cliente/ListarAutomacoesCliente';
 import { useEffect, useState } from 'react';
 
 type AutomacoesClienteProps = {

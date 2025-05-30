@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import React from 'react';
+
 import {
   BarChart,
   Bar,
@@ -79,7 +79,7 @@ export const Indicadores = () => {
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
             <Pie data={clientesPorStatus} dataKey="value" nameKey="status" cx="50%" cy="50%" outerRadius={100} label>
-              {clientesPorStatus.map((entry, index) => (
+              {clientesPorStatus.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>

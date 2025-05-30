@@ -1,4 +1,3 @@
-import { StoresProps } from '@/store/userStores';
 import { IUser } from './types';
 
 export function setUserLocalStorage(user: IUser | null) {

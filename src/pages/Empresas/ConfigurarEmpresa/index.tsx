@@ -10,7 +10,7 @@ import { useConfigurarEmpresa } from './useConfigurarEmpresa';
 
 export const ConfigurarEmpresa = () => {
   const { cnpj } = useParams();
-  const { isLoading, empresa } = useConfigurarEmpresa(cnpj || '');
+  const { empresa } = useConfigurarEmpresa(cnpj || '');
 
   return (
     <div className="h-full">

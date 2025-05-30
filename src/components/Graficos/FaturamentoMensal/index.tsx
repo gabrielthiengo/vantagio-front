@@ -97,7 +97,7 @@ export function FaturamentoMensal() {
                 />
 
                 <Bar dataKey="total" fill="red" radius={8}>
-                  {dados.map((entry, index) => (
+                  {dados.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={blueShades[index % blueShades.length]} />
                   ))}
                 </Bar>

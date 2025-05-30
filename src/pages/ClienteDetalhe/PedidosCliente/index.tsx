@@ -68,7 +68,7 @@ export default function PedidosCliente({ clienteId }: PedidosClienteProps) {
                   </AccordionTrigger>
                   <AccordionContent>
                     <Separator className="bg-gray-300 my-2" />
-                    {pedido.produtos.map((produto) => {
+                    {pedido.produtos.map((produto: any) => {
                       return (
                         <div
                           key={produto?.id}

@@ -19,7 +19,7 @@ import { AutomacaoCriar } from './pages/AutomcacaoCriar';
 import PrimeiroAcesso from './pages/PrimeiroAcesso';
 import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 
-function App() {
+export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -132,5 +132,3 @@ function App() {
     </AuthProvider>
   );
 }
-
-export default App;

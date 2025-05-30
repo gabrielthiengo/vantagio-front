@@ -1,19 +1,38 @@
 import { Api } from '../api';
 
-export type AutomacoesClienteRes = {
+export type PedidosClienteRes = {
   id: number;
-  automacaoId: number;
   tenantId: number;
   clienteId: number;
-  automacaoAcaoId: number;
+  pedidoExternoId: number;
+  clienteExternoId: number;
   status: string;
-  dataExecucao: Date;
-  erro: string;
+  valorTotal: number;
+  valorTotalTaxa: number;
+  valorDescontoTaxa: number;
+  valorDesconto: number;
+  valorEntregaTaxa: number;
+  valorEntrega: number;
+  metodoPagamento: string;
+  carrinhoHash: string;
+  dataPagamento: null;
+  dataFinalizacao: Date;
+  dataCadastroExterno: Date;
+  isCriacaoInterna: boolean;
   createdAt: Date;
   updatedAt: Date;
-  automacao: {
-    nome: string;
-  };
+  produtos: {
+    id: number;
+    pedidoId: number;
+    produtoExternoId: number;
+    nomeProduto: string;
+    quantidade: number;
+    valorTotal: number;
+    valorTotalTaxa: number;
+    valorSubTotal: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
 };
 
 class ListarPedidosCliente {

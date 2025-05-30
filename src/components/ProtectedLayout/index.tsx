@@ -1,5 +1,4 @@
 import { Navigate } from 'react-router-dom';
-import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';
 import { getUserLocalStorage } from '@/context/AuthProvider/util';
 

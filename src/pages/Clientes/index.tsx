@@ -50,7 +50,7 @@ export default function Clientes() {
           setTotal(data.total);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error('Houve um erro ao tentar buscar os dados, tente novamente mais tarde');
       })
       .finally(() => {
