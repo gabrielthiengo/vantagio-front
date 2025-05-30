@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator';
 import { formatarCurrency } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import ListarDadosTicketMedioXTotalVendas from '@/services/graficos/ListarDadosTicketMedioXTotalVendas';
-import { Skeleton } from '@/components/ui/skeleton';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const chartConfig = {
   ticketMedio: {
@@ -165,11 +165,7 @@ export function TicketMedioXNumeroVendas() {
 
       {isLoading && (
         <div>
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4" />
+          <LoadingComponent />
         </div>
       )}
     </div>

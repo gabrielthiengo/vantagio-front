@@ -12,10 +12,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { Skeleton } from '@/components/ui/skeleton';
 import { CriarEmpresa } from './CriarEmpresa';
 import { useNavigate } from 'react-router-dom';
 import { Status } from '@/components/Status';
+import LoadingComponent from '@/components/LoadingComponent';
+import CardFeedback from '@/components/CardFeedback';
 
 export const Empresas = () => {
   const navigate = useNavigate();
@@ -62,32 +63,34 @@ export const Empresas = () => {
             </TableBody>
           </Table>
 
-          <Pagination className="justify-end mt-4">
-            <PaginationContent>
-              <PaginationItem>
-                {page > 1 && <PaginationPrevious className="cursor-pointer" onClick={() => paginate(page - 1)} />}
-              </PaginationItem>
+          {empresas.length >= 0 && (
+            <Pagination className="justify-end mt-4">
+              <PaginationContent>
+                <PaginationItem>
+                  {page > 1 && <PaginationPrevious className="cursor-pointer" onClick={() => paginate(page - 1)} />}
+                </PaginationItem>
 
-              <PaginationItem>
-                <PaginationLink>
-                  {page <= 1 && page * 10 > total && `Total: ${total}`}
-                  {page >= 1 && page * 10 <= total && page}
-                </PaginationLink>
-              </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink>
+                    {page <= 1 && page * 10 > total && `Total: ${total}`}
+                    {page >= 1 && page * 10 <= total && page}
+                  </PaginationLink>
+                </PaginationItem>
 
-              <PaginationItem>
-                {page * 10 < total && <PaginationNext className="cursor-pointer" onClick={() => paginate(page + 1)} />}
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+                <PaginationItem>
+                  {page * 10 < total && (
+                    <PaginationNext className="cursor-pointer" onClick={() => paginate(page + 1)} />
+                  )}
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
+
+          {empresas.length === 0 && <CardFeedback text="Nenhuma empresa encontrada" />}
         </Card>
       ) : (
         <div>
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4" />
+          <LoadingComponent />
         </div>
       )}
     </div>

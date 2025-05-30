@@ -10,7 +10,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatarData } from '@/lib/utils';
 import ListarAutomacoes, { AutomacaoResponse } from '@/services/automaoes/ListarAutomacoes';
@@ -23,6 +22,7 @@ import { AutomacaoCriar } from '../AutomcacaoCriar';
 import CardFeedback from '@/components/CardFeedback';
 import { Status } from '@/components/Status';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import LoadingComponent from '@/components/LoadingComponent';
 
 export function Automacoes() {
   const navigate = useNavigate();
@@ -150,11 +150,7 @@ export function Automacoes() {
         </Card>
       ) : (
         <div>
-          <Skeleton className="h-16 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-16 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-16" />
+          <LoadingComponent />
         </div>
       )}
 

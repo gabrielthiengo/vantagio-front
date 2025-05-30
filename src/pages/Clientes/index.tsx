@@ -1,5 +1,6 @@
 import CardFeedback from '@/components/CardFeedback';
 import InputBlock from '@/components/InputBlock';
+import LoadingComponent from '@/components/LoadingComponent';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -12,7 +13,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatarCPF, formatarData, formatarTelefone } from '@/lib/utils';
 import ListarClientes, { ClientesList, FiltrosCliente } from '@/services/cliente/ListarClientes';
@@ -207,11 +207,7 @@ export default function Clientes() {
         </Card>
       ) : (
         <div>
-          <Skeleton className="h-16 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-16 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-16" />
+          <LoadingComponent />
         </div>
       )}
     </div>

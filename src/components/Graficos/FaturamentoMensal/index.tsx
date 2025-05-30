@@ -9,8 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import { blueShades } from '@/lib/grafico-cores';
 import ListarDadosHistoricoVendas from '@/services/graficos/ListarDadosHistoricoVendas';
 import { useEffect, useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 import { formatarCurrency } from '@/lib/utils';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const chartConfig = {
   total: {
@@ -121,11 +121,7 @@ export function FaturamentoMensal() {
 
       {isLoading && (
         <div>
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4 mb-1" />
-          <Skeleton className="h-4" />
+          <LoadingComponent />
         </div>
       )}
     </div>
