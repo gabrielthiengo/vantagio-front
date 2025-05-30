@@ -22,7 +22,7 @@ import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <Routes>
           <Route path="/authenticate" element={<Login />} />
 
