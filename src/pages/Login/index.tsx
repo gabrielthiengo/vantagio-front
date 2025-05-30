@@ -6,6 +6,7 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { InputError } from '@/components/InputErrors';
 import logotipo from '@/assets/logo-vantagio.jpeg';
 import { useLogin } from './useLogin';
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
   const { isLoading, isValid, errors, register, handleSubmit, handleFormSubmit } = useLogin();
@@ -44,6 +45,13 @@ export const Login = () => {
               </Button>
             )}
           </form>
+
+          <div className="mt-6 text-sm w-full text-right">
+            <span className="text-gray-600">Não possui usuário?</span>{' '}
+            <Link to="/acesso" className="text-primary font-semibold">
+              Cadastre-se aqui!
+            </Link>{' '}
+          </div>
         </CardContent>
       </Card>
     </div>
