@@ -1,10 +1,20 @@
-import * as path from "path"
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import * as path from 'path';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'static.json',
+          dest: '',
+        },
+      ],
+    }),
+  ],
   server: {
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
@@ -13,7 +23,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-})
+});
