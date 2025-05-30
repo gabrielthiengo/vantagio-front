@@ -130,7 +130,7 @@ export const Campanhas = () => {
             </TableBody>
           </Table>
 
-          {campanhas.length === 0 && <CardFeedback text="Nenhuma automação encontrada" />}
+          {campanhas.length === 0 && <CardFeedback text="Nenhuma campanha encontrada" />}
 
           <Pagination className="justify-end mt-4">
             <PaginationContent>

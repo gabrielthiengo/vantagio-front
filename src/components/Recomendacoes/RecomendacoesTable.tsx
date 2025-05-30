@@ -20,6 +20,7 @@ import { RecomendacoesData } from './types';
 import { Send } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GerirAcoesRecomendacoes } from './GerirAcoesRecomendacoes';
+import CardFeedback from '../CardFeedback';
 
 type RecomendacoesTableProps = {
   data: RecomendacoesData[];
@@ -154,33 +155,33 @@ export function RecomendacoesTable({ data, totalPages, currentPage, paginate }: 
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  Nenhum registro encontrado.
-                </TableCell>
+                <CardFeedback text="Nenhum cliente encontrado" />
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length} linhas(s)
-          selecionadas.
+      {table.getFilteredRowModel().rows.length > 0 && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex-1 text-sm text-muted-foreground">
+            {table.getFilteredSelectedRowModel().rows.length} de {table.getFilteredRowModel().rows.length} linhas(s)
+            selecionadas.
+          </div>
+          <div className="space-x-2">
+            <Button variant="outline" size="sm" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => paginate(currentPage + 1)}
+              disabled={totalPages === currentPage}
+            >
+              Próximo
+            </Button>
+          </div>
         </div>
-        <div className="space-x-2">
-          <Button variant="outline" size="sm" onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => paginate(currentPage + 1)}
-            disabled={totalPages === currentPage}
-          >
-            Próximo
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }
