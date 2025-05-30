@@ -2,7 +2,7 @@ import { getUserLocalStorage } from '@/context/AuthProvider/util';
 import axios from 'axios';
 
 export const Api = axios.create({
-  baseURL: 'http://localhost:3333', // 'https://api-integracao-commerce-hub.onrender.com',
+  baseURL: process.env.URL_API_VANTAGIO,
 });
 
 Api.interceptors.request.use((config) => {

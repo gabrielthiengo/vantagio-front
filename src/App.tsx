@@ -16,6 +16,8 @@ import Clientes from './pages/Clientes';
 import Pedidos from './pages/Pedidos';
 import ClienteDetalhe from './pages/ClienteDetalhe';
 import { AutomacaoCriar } from './pages/AutomcacaoCriar';
+import PrimeiroAcesso from './pages/PrimeiroAcesso';
+import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 
 function App() {
   return (
@@ -23,6 +25,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/authenticate" element={<Login />} />
+
+          <Route path="/primeiro/acesso" element={<PrimeiroAcesso />} />
+
           <Route
             path="/"
             element={
@@ -73,6 +78,15 @@ function App() {
             element={
               <ProtectedLayout>
                 <Campanhas />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
+            path="/campanha/detalhe"
+            element={
+              <ProtectedLayout>
+                <CampanhaDetalhe />
               </ProtectedLayout>
             }
           />
