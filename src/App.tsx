@@ -26,7 +26,7 @@ export default function App() {
         <Routes>
           <Route path="/authenticate" element={<Login />} />
 
-          <Route path="/primeiro/acesso" element={<PrimeiroAcesso />} />
+          <Route path="/acesso" element={<PrimeiroAcesso />} />
 
           <Route
             path="/"
