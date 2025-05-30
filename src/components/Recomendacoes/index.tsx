@@ -4,7 +4,7 @@ import { RecomendacoesTable } from '@/components/Recomendacoes/RecomendacoesTabl
 import { useEffect, useState } from 'react';
 import { RecomendacoesRetorno } from './types';
 import ObterRecomendacoes from '@/services/recomendacoes/ObterRecomendacoes';
-import { Skeleton } from '../ui/skeleton';
+import LoadingComponent from '../LoadingComponent';
 
 export default function Recomendacoes() {
   const [recomendacoes, setRecomendacoes] = useState<RecomendacoesRetorno>();
@@ -61,13 +61,9 @@ export default function Recomendacoes() {
       )}
 
       {isLoading && (
-        <Card className="lg:col-span-2 rounded-md shadow-none border-gray-300 p-6">
-          <Skeleton className="h-16 mb-1" />
-          <Skeleton className="h-5 mb-1" />
-          <Skeleton className="h-16 mb-1" />
-          <Skeleton className="h-5 mb-1" />
-          <Skeleton className="h-16" />
-        </Card>
+        <div>
+          <LoadingComponent />
+        </div>
       )}
     </div>
   );

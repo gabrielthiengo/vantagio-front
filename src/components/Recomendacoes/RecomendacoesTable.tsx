@@ -155,7 +155,9 @@ export function RecomendacoesTable({ data, totalPages, currentPage, paginate }: 
               ))
             ) : (
               <TableRow>
-                <CardFeedback text="Nenhum cliente encontrado" />
+                <div className="w-full">
+                  <CardFeedback text="Nenhum cliente encontrado" />
+                </div>
               </TableRow>
             )}
           </TableBody>
