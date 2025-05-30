@@ -145,23 +145,21 @@ export function RecomendacoesTable({ data, totalPages, currentPage, paginate }: 
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length &&
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <div className="w-full">
-                  <CardFeedback text="Nenhum cliente encontrado" />
-                </div>
-              </TableRow>
-            )}
+              ))}
           </TableBody>
         </Table>
+        {table.getFilteredRowModel().rows.length === 0 && (
+          <div className="w-full">
+            <CardFeedback text="Nenhum cliente encontrado" />
+          </div>
+        )}
       </div>
       {table.getFilteredRowModel().rows.length > 0 && (
         <div className="flex items-center justify-end space-x-2 py-4">
