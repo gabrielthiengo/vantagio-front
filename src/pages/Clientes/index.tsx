@@ -75,7 +75,7 @@ export default function Clientes() {
             <div className="flex items-center gap-4">
               <InputBlock label="Nome">
                 <Input
-                  value={filtros.nome}
+                  value={filtros.nome ?? ''}
                   onChange={(e) => {
                     handleUpdateFiltro('nome', e.target.value);
                   }}
@@ -84,7 +84,7 @@ export default function Clientes() {
 
               <InputBlock label="Cpf">
                 <Input
-                  value={filtros?.cpf}
+                  value={filtros?.cpf ?? ''}
                   onChange={(e) => {
                     handleUpdateFiltro('cpf', e.target.value);
                   }}
@@ -93,7 +93,7 @@ export default function Clientes() {
 
               <InputBlock label="Email">
                 <Input
-                  value={filtros.email}
+                  value={filtros.email ?? ''}
                   onChange={(e) => {
                     handleUpdateFiltro('email', e.target.value);
                   }}

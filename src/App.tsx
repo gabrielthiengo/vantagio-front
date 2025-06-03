@@ -18,6 +18,7 @@ import ClienteDetalhe from './pages/ClienteDetalhe';
 import { AutomacaoCriar } from './pages/AutomcacaoCriar';
 import PrimeiroAcesso from './pages/PrimeiroAcesso';
 import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
+import PedidoDetalhe from './pages/PedidoDetalhe';
 
 export default function App() {
   return (
@@ -42,6 +43,15 @@ export default function App() {
             element={
               <ProtectedLayout>
                 <Pedidos />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
+            path="/pedido/detalhe/:id"
+            element={
+              <ProtectedLayout>
+                <PedidoDetalhe />
               </ProtectedLayout>
             }
           />

@@ -2,9 +2,9 @@ import { Api } from '../api';
 
 export type FiltrosCliente = {
   page: number;
-  nome: string;
-  email: string;
-  cpf: string;
+  nome?: string | null;
+  email?: string | null;
+  cpf?: string | null;
 };
 
 export type ClientesList = {
@@ -22,7 +22,7 @@ export type ClientesList = {
   updatedAt: Date;
   pessoa: {
     id: number;
-    nome: string;
+    nome: string | null;
     cpf: string | null;
     rg: string | null;
     dataNascimento: Date | null;

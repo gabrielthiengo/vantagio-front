@@ -10,7 +10,7 @@ type InputBlockProps = {
 
 export default function InputBlock({ label, htmlFor, isRequired, children }: InputBlockProps) {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col">
       <Label htmlFor={htmlFor ?? ''} className="text-gray-700 text-xs">
         {label}
         {isRequired && (

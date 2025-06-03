@@ -76,4 +76,45 @@
   .dialog {
     z-index: 99999 !important;
   }
+
+  .menu-vantagio {
+    width: 3rem;
+    padding: 1.5rem 0 1.5rem 0;
+    height: 100%;
+  }
+  .menu-vantagio:hover {
+    width: 16rem;
+    padding: 0.75rem;
+    padding-top: 1.5rem;
+  }
+  .menu-vantagio:hover .tracking-wider {
+    display: block;
+  }
+  .menu-vantagio .tracking-wider {
+    display: none;
+  }
+  .menu-vantagio:not(:hover) > div > div :not(.not-invisible) {
+    visibility: hidden;
+    display: none;
+  }
+  .menu-vantagio .v-logo {
+    visibility: visible !important;
+    display: block !important;
+  }
+  .menu-vantagio:hover .v-logo {
+    visibility: hidden !important;
+    display: none !important;
+  }
+  .menu-vantagio:not(:hover) .not-invisible {
+    border-radius: unset;
+  }
+  .menu-vantagio:hover > div > div {
+    visibility: visible;
+  }
+  :not(button) .tracking-wider {
+    padding-left: 10px;
+  }
+  .menu-vantagio:not(:hover) ~ div {
+    margin-left: 3rem;
+  }
 }

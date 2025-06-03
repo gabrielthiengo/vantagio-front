@@ -1,6 +1,7 @@
-import { BarChart3, Boxes, Cog, HomeIcon, ShoppingBasket, Users, Building2, LineChart, LogOut } from 'lucide-react';
+import { BarChart3, Boxes, HomeIcon, ShoppingBasket, Users, Building2, LineChart, LogOut } from 'lucide-react';
 import { SidebarItem } from '../SidebarItem';
 import logo from '@/assets/logo-vantagio.jpeg';
+import logo2 from '@/assets/VLogo.png';
 import { UserInfo } from '../UserInfo';
 import { useAuth } from '@/context/AuthProvider/useAuth';
 
@@ -8,10 +9,11 @@ export const Sidebar = () => {
   const { usuario } = useAuth();
 
   return (
-    <div className="shadow-none border-r border-gray-300 h-full fixed w-64 p-3 pt-6 bg-white">
+    <div className="shadow-none border-r border-gray-300 fixed bg-white menu-vantagio">
       <div className="w-full flex flex-col mb-8 mt-2 gap-2">
         <div className="w-full flex justify-center">
           <img src={logo} alt="logo" style={{ width: '170px' }} />
+          <img className="v-logo" src={logo2} alt="logo2" style={{ height: '30px' }} />
         </div>
 
         <UserInfo />
@@ -47,9 +49,9 @@ export const Sidebar = () => {
 
       <div className="text-xs text-gray-400 font-semibold tracking-wider mb-2">EMPRESA</div>
 
-      <SidebarItem title="Configurações" page="/configuraçao">
+      {/* {<SidebarItem title="Configurações" page="/configuraçao">
         <Cog size={18} />
-      </SidebarItem>
+      </SidebarItem>} */}
 
       {usuario?.isMaster && (
         <SidebarItem title="Empresas" page="/empresa">
