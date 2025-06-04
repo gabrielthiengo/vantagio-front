@@ -19,7 +19,7 @@ module.exports = {
         main: '250px 1fr',
       },
       colors: {
-        defaultBackground: '#fcf4ff',
+        defaultBackground: '#f3f6f8',
         secondaryBackground: '#003366',
         secondaryBackground2: 'rgba(0, 51, 102, .09)',
         border: 'hsl(var(--border))',
