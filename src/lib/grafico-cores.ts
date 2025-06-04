@@ -9,3 +9,8 @@ export const blueShades = [
   '#38BDF8',
   '#7DD3FC',
 ];
+
+export function getRandomBlueShade(): string {
+  const index = Math.floor(Math.random() * blueShades.length);
+  return blueShades[index];
+}

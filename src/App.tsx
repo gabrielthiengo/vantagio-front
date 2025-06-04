@@ -19,6 +19,7 @@ import { AutomacaoCriar } from './pages/AutomcacaoCriar';
 import PrimeiroAcesso from './pages/PrimeiroAcesso';
 import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 import PedidoDetalhe from './pages/PedidoDetalhe';
+import AutomacaoInsigt from './pages/AutomacaoInsigt';
 
 export default function App() {
   return (
@@ -70,6 +71,15 @@ export default function App() {
             element={
               <ProtectedLayout>
                 <Automacoes />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
+            path="/automacao/insigt/:id"
+            element={
+              <ProtectedLayout>
+                <AutomacaoInsigt />
               </ProtectedLayout>
             }
           />

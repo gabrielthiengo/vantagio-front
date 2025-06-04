@@ -111,9 +111,7 @@ export function Automacoes() {
                           variant={'ghost'}
                           className="flex items-center gap-1 text-orange-700"
                           onClick={() => {
-                            setAutomacaoSelecionada(automacao);
-
-                            setToggleDialog(true);
+                            navigate(`/automacao/insigt/${automacao.id}`);
                           }}
                         >
                           <PieChart size={12} />
