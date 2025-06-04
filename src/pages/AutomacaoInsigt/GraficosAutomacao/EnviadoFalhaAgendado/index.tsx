@@ -25,7 +25,7 @@ export function GraficoEnviadoFalhaAgendado({ data }: Props) {
   };
 
   return (
-    <Card className="min-h-[100%] max-h-[100%] border border-gray-300 rounded-md shadow-none">
+    <Card className="min-h-[100%] max-h-[100%] border border-gray-300 rounded shadow-none">
       <CardHeader className="p-3">
         <CardTitle>Enviado x Agendado x Falha</CardTitle>
         <CardDescription className="text-xs">Exibindo os dados da automação</CardDescription>

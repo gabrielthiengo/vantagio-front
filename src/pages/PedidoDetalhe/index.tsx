@@ -18,11 +18,11 @@ export default function PedidoDetalhe() {
 
       {!isFetching ? (
         <div className="flex gap-3">
-          <Card className="flex-1 p-4 shadow-sm flex flex-col gap-2">
+          <Card className="flex-1 p-4 rounded shadow-sm flex flex-col gap-2">
             <span className="text-sm text-gray-500">Detalhes</span>
 
             <div className="flex gap-2">
-              <Card className="flex-1 p-4 shadow-sm grid grid-cols-2 gap-2">
+              <Card className="flex-1 p-4 rounded shadow-sm grid grid-cols-2 gap-2">
                 <InputBlock label="Nome do cliente">
                   <span className="text-sm text-gray-700">{pedido.cliente?.pessoa.nome}</span>
                 </InputBlock>
@@ -58,7 +58,7 @@ export default function PedidoDetalhe() {
                 </InputBlock>
               </Card>
 
-              <Card className="flex-1 p-4 shadow-sm grid grid-cols-2 gap-2">
+              <Card className="flex-1 p-4 rounded shadow-sm grid grid-cols-2 gap-2">
                 <InputBlock label="Valor total">
                   <span className="text-sm text-gray-700">{formatarCurrency(Number(pedido.valorTotal))}</span>
                 </InputBlock>
@@ -101,7 +101,7 @@ export default function PedidoDetalhe() {
               </Card>
             </div>
           </Card>
-          <Card className="flex-1 p-4 shadow-sm flex flex-col gap-2">
+          <Card className="flex-1 p-4 rounded shadow-sm flex flex-col gap-2">
             <span className="text-sm text-gray-500">Produtos do pedido</span>
             {pedido.produtos.map((produto) => {
               return (

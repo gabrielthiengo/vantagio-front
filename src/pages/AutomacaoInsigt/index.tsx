@@ -18,14 +18,14 @@ export default function AutomacaoInsigt() {
 
       {!isFetching ? (
         <div className="grid grid-cols-2 gap-3">
-          <Card className="shadow rounded-md p-4">
+          <Card className="shadow rounded p-4">
             <span className="text-gray-600">Envios realizado por esta automação</span>
 
             <Separator className="mt-2 mb-2" />
 
             <EnviosAutomacao automacaoId={Number(id)} />
           </Card>
-          <Card className="shadow rounded-md p-4">
+          <Card className="shadow rounded p-4">
             <span className="text-gray-600">Indicadores da automação</span>
 
             <Separator className="mt-2 mb-2" />

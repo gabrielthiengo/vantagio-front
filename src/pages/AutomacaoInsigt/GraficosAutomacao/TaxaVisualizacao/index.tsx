@@ -20,7 +20,7 @@ const chartConfig = {
 
 export function GraficoTaxaVisualizacao({ data }: Props) {
   return (
-    <Card className="min-h-[100%] max-h-[100%] border border-gray-300 rounded-md shadow-none">
+    <Card className="min-h-[100%] max-h-[100%] border border-gray-300 rounded shadow-none">
       <CardHeader className="p-3">
         <CardTitle>Visualizações ao longo do tempo</CardTitle>
         <CardDescription className="text-xs">Exibindo os dados da automação</CardDescription>

@@ -24,7 +24,7 @@ export default function EnviosAutomacao({ automacaoId }: { automacaoId: number }
 
   return (
     <div>
-      <Card className="shadow rounded-sm p-4 mb-5 flex flex-col">
+      <Card className="shadow rounded p-4 mb-5 flex flex-col">
         <div className="flex gap-2">
           <InputBlock label="Cliente">
             <ClienteCombobox
@@ -106,7 +106,7 @@ export default function EnviosAutomacao({ automacaoId }: { automacaoId: number }
         <div className="flex flex-col gap-2">
           {envios.map((envio) => {
             return (
-              <Card key={envio.id} className="shadow rounded-sm p-4">
+              <Card key={envio.id} className="shadow rounded p-4">
                 <InputBlock label="Cliente">
                   <span className="text-sm">{envio.cliente?.pessoa.nome}</span>
                 </InputBlock>
