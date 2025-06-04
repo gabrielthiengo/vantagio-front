@@ -105,7 +105,7 @@ export default function PedidoDetalhe() {
             <span className="text-sm text-gray-500">Produtos do pedido</span>
             {pedido.produtos.map((produto) => {
               return (
-                <Card className="flex-1 p-4 shadow-sm" key={produto.id}>
+                <Card className="flex-1 p-4 shadow-sm rounded" key={produto.id}>
                   <InputBlock label="Produto">
                     <span className="text-sm text-gray-700">{produto.nomeProduto}</span>
                   </InputBlock>
