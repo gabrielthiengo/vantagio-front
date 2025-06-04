@@ -34,7 +34,10 @@ export default function ClienteDetalhe() {
 
   return (
     <div>
-      <PageHeader title={`Cliente - ${cliente?.pessoa?.nome}`} icon={<UserRoundSearch size={18} />} />
+      <PageHeader
+        title={`Cliente - ${cliente?.pessoa?.nome ? cliente?.pessoa?.nome : 'Carregando...'}`}
+        icon={<UserRoundSearch size={18} />}
+      />
 
       {!isFetching && (
         <Card className="rounded shadow-none border border-gray-300 p-4 grid grid-cols-2 gap-3">
