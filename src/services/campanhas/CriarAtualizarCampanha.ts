@@ -19,7 +19,7 @@ type CriarCampanha = {
 class CriarAtualizarCampanha {
   async createOrUpdate(campanha: any) {
     if (!campanha?.id) {
-      const response = await this.create({
+      const data = await this.create({
         nome: campanha.nome,
         descricao: campanha.descricao,
         dataInicio: campanha.dataInicio,
@@ -35,7 +35,7 @@ class CriarAtualizarCampanha {
         templateEmailId: campanha.mensagem.templateId,
       });
 
-      return response?.data;
+      return data;
     } else {
       const data = await this.update({
         id: campanha?.id,

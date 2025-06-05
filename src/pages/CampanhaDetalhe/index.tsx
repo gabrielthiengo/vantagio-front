@@ -69,6 +69,8 @@ export function CampanhaDetalhe({ campanha, dispatch }: CampanhaProps) {
 
         if (dispatch) {
           dispatch();
+        } else {
+          navigate('/campanha');
         }
       })
       .finally(() => {
@@ -252,7 +254,7 @@ export function CampanhaDetalhe({ campanha, dispatch }: CampanhaProps) {
                 <SelectContent>
                   {templates.map((template) => {
                     return (
-                      <div>
+                      <div key={template.id}>
                         <SelectItem key={template.id} value={String(template.id)}>
                           <span>{template.nome}</span>
                         </SelectItem>

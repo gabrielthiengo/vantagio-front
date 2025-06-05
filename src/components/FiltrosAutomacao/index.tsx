@@ -39,6 +39,19 @@ const filtrosPermitidosPorEvento: Record<string, CampoFiltro[]> = {
   COMPRA_REALIZADA: ['valorTotalPedido', 'cidade', 'estado', 'genero'],
   STATUS_PEDIDO: ['statusPedido'],
   FEEDBACK: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
+  DESCONTO_RELAMPAGO: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
+  DESCONTO_PROGRESSIVO: [
+    'diasSemPedido',
+    'ticketMedio',
+    'valorTotalPedido',
+    'diasPedido',
+    'cidade',
+    'estado',
+    'genero',
+  ],
+  FRETE_GRATIS: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
+  COMPRE_GANHE: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
+  DATA_COMEMORATIVA: ['diasSemPedido', 'ticketMedio', 'valorTotalPedido', 'diasPedido', 'cidade', 'estado', 'genero'],
 };
 
 type FiltrosAutomacaoProps = {
@@ -71,7 +84,6 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
   };
 
   const handleAlterarFiltro = (index: number, campo: keyof Filtro, valor: string) => {
-    console.log({ valor, campo });
     const novosFiltros = [...filtros];
     if (campo === 'campo' || campo === 'operador' || campo === 'valor') {
       novosFiltros[index] = {

@@ -40,8 +40,6 @@ export const useEnviosAutomacao = (automacaoId: number) => {
   };
 
   useEffect(() => {
-    console.log('aqui');
-    setIsFetching(true);
     listarEnviosAutomacao();
   }, [limit]);
 
