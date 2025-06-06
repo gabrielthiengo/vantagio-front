@@ -45,6 +45,12 @@ export function CriarEmpresa() {
             </div>
 
             <div>
+              <Label htmlFor="subdominio">Subdominio</Label>
+              <Input {...register('subdominio')} className={`${errors.subdominio && 'border-red-500'}`} />
+              {errors.subdominio && <InputError error={errors.subdominio?.message ?? ''} />}
+            </div>
+
+            <div>
               <Label htmlFor="ecommerce">Ecommerce</Label>
               <Input {...register('ecommerce')} className={`${errors.ecommerce && 'border-red-500'}`} />
               {errors.ecommerce && <InputError error={errors.ecommerce?.message ?? ''} />}

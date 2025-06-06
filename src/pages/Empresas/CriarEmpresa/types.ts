@@ -7,6 +7,7 @@ export const criarEmpresaSchema = z.object({
     .max(14, 'CNPJ inválido')
     .regex(/^\d{14}$/, 'CNPJ inválido'),
   dominio: z.string().min(1, 'Domínio inválido'),
+  subdominio: z.string().min(1, 'Subdominio é obrigatório'),
   apiKey: z.string().min(1, 'API Key é obrigatória'),
   apiSecret: z.string().min(1, 'API Secret é obrigatória'),
   ecommerce: z.string().min(1, 'E-commerce é obrigatório'),

@@ -2,11 +2,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 import { Separator } from '@/components/ui/separator';
 import { getRandomBlueShade } from '@/lib/grafico-cores';
-import { VisualizacoesData } from '@/services/automaoes/ListarGraficosAutomacao';
-import { XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, Cell } from 'recharts';
+import { ExecucoesPorDia } from '@/services/automaoes/ListarGraficosAutomacao';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from 'recharts';
 
 type Props = {
-  data: VisualizacoesData[];
+  data: ExecucoesPorDia[];
 };
 
 const chartConfig = {
@@ -15,11 +15,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function VisualizacoesAoLongoDoTempo({ data }: Props) {
+export function ExecucoesPorDiaChart({ data }: Props) {
   return (
-    <Card className="min-h-[100%] max-h-[100%] border border-gray-300 rounded-md shadow-none">
+    <Card className="min-h-[100%] max-h-[100%] border border-gray-300 rounded shadow-none">
       <CardHeader className="p-3">
-        <CardTitle>Visualizações ao longo do tempo</CardTitle>
+        <CardTitle>Execuções por dia</CardTitle>
         <CardDescription className="text-xs">Exibindo os dados da automação</CardDescription>
         <Separator className="bg-gray-300" />
       </CardHeader>
@@ -28,11 +28,11 @@ export function VisualizacoesAoLongoDoTempo({ data }: Props) {
         <ChartContainer config={chartConfig}>
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="hora" />
+            <XAxis dataKey="dia" />
             <YAxis />
             <Tooltip />
 
-            <Bar dataKey="quantidade" name="Total de visualizações">
+            <Bar dataKey="quantidade" name="Total de execuções">
               {data.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={getRandomBlueShade()} />
               ))}

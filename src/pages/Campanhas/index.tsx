@@ -113,11 +113,7 @@ export const Campanhas = () => {
                         <Button
                           variant={'ghost'}
                           className="flex items-center gap-1 text-orange-700"
-                          onClick={() => {
-                            setCampanhaSelecionada(campanha);
-
-                            setToggleDialog(true);
-                          }}
+                          onClick={() => navigate(`/campanha/insigt/${campanha.id}`)}
                         >
                           <PieChart size={12} />
                           Insigts

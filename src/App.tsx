@@ -20,6 +20,7 @@ import PrimeiroAcesso from './pages/PrimeiroAcesso';
 import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 import PedidoDetalhe from './pages/PedidoDetalhe';
 import AutomacaoInsigt from './pages/AutomacaoInsigt';
+import CampanhaInsigt from './pages/CampanhaInsigt';
 
 export default function App() {
   return (
@@ -107,6 +108,15 @@ export default function App() {
             element={
               <ProtectedLayout>
                 <CampanhaDetalhe />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
+            path="/campanha/insigt/:id"
+            element={
+              <ProtectedLayout>
+                <CampanhaInsigt />
               </ProtectedLayout>
             }
           />

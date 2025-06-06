@@ -2,12 +2,12 @@ import LoadingComponent from '@/components/LoadingComponent';
 import { GraficoEnviadoFalhaAgendado } from './EnviadoFalhaAgendado';
 import { ExecucoesPorDiaChart } from './ExecucaoPorDia';
 import { GraficoTaxaVisualizacao } from './TaxaVisualizacao';
+import { useGraficosCampanha } from './useGraficosCampanha';
 import { VisualizacoesAoLongoDoTempo } from './VisualizacoesAoLongoDoTempo';
-import { useGraficosAutomacao } from './useGraficosAutomacao';
 
-export default function GraficosAutomacao({ automacaoId }: { automacaoId: number }) {
+export default function GraficosCampanha({ campanhaId }: { campanhaId: number }) {
   const { isFetching, statusEnvio, execucoesDia, visualizacaoTempo, taxaVisualizacao } =
-    useGraficosAutomacao(automacaoId);
+    useGraficosCampanha(campanhaId);
 
   return (
     <div>
