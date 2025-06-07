@@ -6,6 +6,7 @@ export interface IEmpresa {
   nomeFantasia: string;
   cnpj: string;
   dominio: string;
+  subdominio: string | null;
   sistema: string;
   apiKey?: string;
   apiSecret?: string;
