@@ -9,6 +9,7 @@ export const atualizarEmpresaSchema = z.object({
   razaoSocial: z.string().min(1, 'Razão social é obrigatório'),
   nomeFantasia: z.string().min(1, 'Nome fantasia é obrigatório'),
   dominio: z.string().min(1, 'Domínio inválido'),
+  subdominio: z.string().min(1, 'Subdominio inválido'),
   apiKey: z.string().min(1, 'API Key é obrigatória'),
   apiSecret: z.string().min(1, 'API Secret é obrigatória'),
   cep: z.string().nullable(),
