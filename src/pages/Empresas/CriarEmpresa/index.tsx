@@ -16,7 +16,7 @@ import { InputError } from '@/components/InputErrors';
 import { ReloadIcon } from '@radix-ui/react-icons';
 
 export function CriarEmpresa() {
-  const { isLoading, isValid, errors, register, handleSubmit, handleFormSubmit } = useCriarEmpresa();
+  const { isLoading, isValid, errors, register, handleSubmit, handleFormSubmit, setValue } = useCriarEmpresa();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -67,6 +67,22 @@ export function CriarEmpresa() {
                 <Input {...register('apiSecret')} className={`${errors.apiSecret && 'border-red-500'}`} />
                 {errors.apiSecret && <InputError error={errors.apiSecret?.message ?? ''} />}
               </div>
+            </div>
+
+            <div>
+              <Label htmlFor="logo">Logo</Label>
+              <Input
+                accept="image/*"
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setValue('logoFile', file);
+                  }
+                }}
+                className={`${errors.logo && 'border-red-500'}`}
+              />
+              {errors.logo && <InputError error={errors.logo?.message ?? ''} />}
             </div>
 
             <DialogFooter>

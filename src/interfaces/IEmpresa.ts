@@ -7,6 +7,7 @@ export interface IEmpresa {
   cnpj: string;
   dominio: string;
   subdominio: string | null;
+  logo: string | null;
   sistema: string;
   apiKey?: string;
   apiSecret?: string;

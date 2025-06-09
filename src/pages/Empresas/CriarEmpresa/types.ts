@@ -11,6 +11,12 @@ export const criarEmpresaSchema = z.object({
   apiKey: z.string().min(1, 'API Key é obrigatória'),
   apiSecret: z.string().min(1, 'API Secret é obrigatória'),
   ecommerce: z.string().min(1, 'E-commerce é obrigatório'),
+  logoFile: z
+    .custom<File>((file) => file instanceof File, {
+      message: 'Arquivo inválido',
+    })
+    .optional(),
+  logo: z.string().optional(),
 });
 
 export type CriarEmpresaSchema = z.infer<typeof criarEmpresaSchema>;
