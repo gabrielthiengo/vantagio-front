@@ -5,8 +5,8 @@ import { convertToBase64 } from '@/lib/convert-base64';
 class CriarEmpresa {
   async execute(empresa: CriarEmpresaSchema) {
     try {
-      if (empresa.logo) {
-        empresa.logoBase64 = await convertToBase64(empresa.logo);
+      if (empresa.logoFile) {
+        empresa.logo = await convertToBase64(empresa.logoFile);
       }
 
       const response = await Api.post('/empresa/criar', empresa);
