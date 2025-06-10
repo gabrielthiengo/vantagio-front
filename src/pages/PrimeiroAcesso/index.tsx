@@ -91,7 +91,7 @@ export default function PrimeiroAcesso() {
         <CardHeader className="flex flex-col items-center">
           <img src={logotipo} alt="logo" style={{ width: '250px' }} />
 
-          <CardDescription>Transformando dados em decisões inteligentes</CardDescription>
+          <CardDescription>A jornada de sucesso do seu e-commerce começa aqui</CardDescription>
         </CardHeader>
 
         <CardContent>
@@ -217,11 +217,11 @@ export default function PrimeiroAcesso() {
 
               <div className="mt-5 text-xs h-96 overflow-y-scroll">
                 <div dangerouslySetInnerHTML={{ __html: dadosPrimeiroAcesso.termo.termo }} />
-              </div>
 
-              <div className="flex items-center gap-2 text-sm ml-5 mt-4">
-                <Checkbox checked={isTermoChecked} onClick={() => setIsTermoChecked(!isTermoChecked)} />{' '}
-                <span>Li e concordo com os termos de consentimento.</span>
+                <div className="flex items-center gap-2 text-sm ml-5 mt-4">
+                  <Checkbox checked={isTermoChecked} onClick={() => setIsTermoChecked(!isTermoChecked)} />{' '}
+                  <span>Li e concordo com os termos de consentimento.</span>
+                </div>
               </div>
 
               <Button

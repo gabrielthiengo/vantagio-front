@@ -17,7 +17,7 @@ export const Login = () => {
         <CardHeader className="flex flex-col items-center">
           <img src={logotipo} alt="logo" style={{ width: '250px' }} />
 
-          <CardDescription>Transformando dados em decisões inteligentes</CardDescription>
+          <CardDescription>A jornada de sucesso do seu e-commerce começa aqui</CardDescription>
         </CardHeader>
 
         <CardContent>
