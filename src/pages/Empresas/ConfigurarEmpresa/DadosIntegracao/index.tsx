@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { IntegracaoMassa } from './IntegracaoMassa';
 import WebHooks from './Webhooks';
+import CamposCustomizadosIntegracao from './CamposCustomizadosIntegracao';
 
 export const DadosIntegracao = ({ empresaId }: { empresaId: number }) => {
   return (
@@ -26,9 +27,7 @@ export const DadosIntegracao = ({ empresaId }: { empresaId: number }) => {
 
       <div>
         <Card className="p-2 rounded">
-          <span className="text-sm text-gray-800">Campos customizados integração</span>
-
-          <Separator className="mt-2 mb-2" />
+          <CamposCustomizadosIntegracao empresaId={empresaId} />
         </Card>
       </div>
     </div>
