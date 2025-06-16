@@ -57,7 +57,12 @@ export function FaturamentoMensal() {
         setVariacao(variacoes);
       }
 
-      setDados(data);
+      const dadosFormatados = dados.map((item) => ({
+        ...item,
+        total: Number(item.total),
+      }));
+
+      setDados(dadosFormatados);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -107,7 +112,8 @@ export function FaturamentoMensal() {
           <CardFooter className="flex-col items-start gap-2 text-sm p-3">
             {variacao.length > 0 && (
               <div className="flex gap-2 font-medium leading-none text-sm">
-                {variacao[variacao.length - 1].tendencia} de {variacao[variacao.length - 1].variacao} neste mês
+                {variacao[variacao.length - 1].tendencia} de{' '}
+                {String(variacao[variacao.length - 1].variacao).replace('-', '')} neste mês
                 <TrendingUp
                   className={`h-4 w-4 ${
                     variacao[variacao.length - 1].tendencia === 'Crescimento' ? 'text-green-500' : 'text-red-500'

@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
-import CriarEmpresa from '@/services/empresa/CriarEmpresa';
 import { useNavigate } from 'react-router-dom';
 import { atualizarEmpresaSchema, AtualizarEmpresaSchema } from './types';
+import { apiRequest } from '@/services/apiRequest';
+import { IEmpresa } from '@/interfaces/IEmpresa';
 
 export const useEditarEmpresa = () => {
   const navigate = useNavigate();
@@ -21,24 +22,24 @@ export const useEditarEmpresa = () => {
     resolver: zodResolver(atualizarEmpresaSchema),
   });
 
-  async function handleFormSubmit(data: AtualizarEmpresaSchema): Promise<void | string> {
+  async function handleFormSubmit(empresa: AtualizarEmpresaSchema): Promise<void | string> {
     setIsLoading(true);
     setIsSuccess(false);
 
-    const { isSuccess, message, cnpj } = await CriarEmpresa.execute(data);
+    const { sucesso, mensagem, data } = await apiRequest<IEmpresa>('empresa/atualizar', 'PUT', empresa);
 
-    if (!isSuccess) {
+    if (!sucesso) {
       setIsLoading(false);
-      toast.error(message);
+      toast.error(mensagem);
       return '';
     }
 
-    toast.success('Empresa criada com sucesso');
+    toast.success('Empresa atualizada com sucesso');
 
     setIsSuccess(true);
     setIsLoading(false);
 
-    navigate(`/empresa/configurar/${cnpj}`);
+    navigate(`/empresa/configurar/${data?.cnpj}`);
   }
 
   return {

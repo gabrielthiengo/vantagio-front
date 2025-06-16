@@ -3,8 +3,10 @@ import { useForm } from 'react-hook-form';
 import { criarEmpresaSchema, CriarEmpresaSchema } from './types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
-import CriarEmpresa from '@/services/empresa/CriarEmpresa';
 import { useNavigate } from 'react-router-dom';
+import { apiRequest } from '@/services/apiRequest';
+import { convertToBase64 } from '@/lib/convert-base64';
+import { IEmpresa } from '@/interfaces/IEmpresa';
 
 export const useCriarEmpresa = () => {
   const navigate = useNavigate();
@@ -21,15 +23,19 @@ export const useCriarEmpresa = () => {
     resolver: zodResolver(criarEmpresaSchema),
   });
 
-  async function handleFormSubmit(data: CriarEmpresaSchema): Promise<void | string> {
+  async function handleFormSubmit(empresa: CriarEmpresaSchema): Promise<void | string> {
     setIsLoading(true);
     setIsSuccess(false);
 
-    const { isSuccess, message, cnpj } = await CriarEmpresa.execute(data);
+    if (empresa.logoFile) {
+      empresa.logo = await convertToBase64(empresa.logoFile);
+    }
 
-    if (!isSuccess) {
+    const { sucesso, mensagem, data } = await apiRequest<IEmpresa>('/empresa/criar', 'POST', empresa);
+
+    if (!sucesso) {
       setIsLoading(false);
-      toast.error(message);
+      toast.error(mensagem);
       return '';
     }
 
@@ -38,7 +44,7 @@ export const useCriarEmpresa = () => {
     setIsSuccess(true);
     setIsLoading(false);
 
-    navigate(`/empresa/configurar/${cnpj}`);
+    navigate(`/empresa/configurar/${data?.cnpj}`);
   }
 
   return {

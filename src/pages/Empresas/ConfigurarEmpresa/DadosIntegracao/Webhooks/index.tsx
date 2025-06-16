@@ -2,40 +2,50 @@ import CardFeedback from '@/components/CardFeedback';
 import LoadingComponent from '@/components/LoadingComponent';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { IWebhookEmpresa } from '@/interfaces/IWebhookEmpresa';
 import { formatarData } from '@/lib/utils';
-import WebhooksEmpresa, { WebhooksEmpresaRes } from '@/services/empresa/WebhooksEmpresa';
+import { apiRequest } from '@/services/apiRequest';
 import { Info, LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function WebHooks({ empresaId }: { empresaId: number }) {
-  const [webHooks, setWebHooks] = useState<WebhooksEmpresaRes[]>([]);
+  const [webHooks, setWebHooks] = useState<IWebhookEmpresa[]>([]);
   const [isFetching, setIsFetching] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [perPage, setPerPage] = useState(50);
 
-  const listarWebhooks = () => {
-    WebhooksEmpresa.list(empresaId, perPage)
-      .then((data) => {
-        setWebHooks(data);
-      })
-      .finally(() => {
-        setIsFetching(false);
-      });
+  const listarWebhooks = async () => {
+    const { sucesso, mensagem, data } = await apiRequest<IWebhookEmpresa[]>('empresa/webhooks', 'GET', {
+      empresaId,
+      perPage,
+    });
+
+    if (data) {
+      setWebHooks(data);
+      setIsFetching(false);
+
+      return;
+    }
+
+    if (!sucesso) {
+      toast.error(mensagem);
+    }
   };
 
-  const criarWebhooksWoocommerce = () => {
+  const criarWebhooksWoocommerce = async () => {
     setIsCreating(true);
 
-    WebhooksEmpresa.createWebhooks(empresaId)
-      .then((response) => {
-        toast.success(response.message);
-        setPerPage(60);
-        listarWebhooks();
-      })
-      .finally(() => {
-        setIsCreating(false);
-      });
+    const { sucesso, mensagem } = await apiRequest<IWebhookEmpresa>('/empresa/webhooks/criar', 'POST', {
+      empresaId,
+    });
+
+    if (sucesso) {
+      toast.success(mensagem);
+      setPerPage(60);
+      setIsCreating(false);
+      listarWebhooks();
+    }
   };
 
   useEffect(() => {

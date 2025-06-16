@@ -1,6 +1,5 @@
-import CriarCampoIntegracao from '@/services/empresa/CriarCampoIntegracao';
-import ExcluirCampoIntegracao from '@/services/empresa/ExcluirCampoIntegracao';
-import ListarCamposIntegracaoEmpresa, { CamposIntegracaoRes } from '@/services/empresa/ListarCamposIntegracaoEmpresa';
+import { ICamposIntegracao } from '@/interfaces/ICamposIntegracao';
+import { apiRequest } from '@/services/apiRequest';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -8,7 +7,7 @@ export const useCamposCustomizados = (empresaId: number) => {
   const [isFetching, setIsFetching] = useState(true);
   const [isSalvando, setIsSalvando] = useState(false);
   const [toggleDialogCriar, setToggleDialogCriar] = useState(false);
-  const [camposIntegracao, setCamposIntegracao] = useState<CamposIntegracaoRes[]>([]);
+  const [camposIntegracao, setCamposIntegracao] = useState<ICamposIntegracao[]>([]);
   const [campoIntegracaoRecord, setCampoIntegracaoRecord] = useState({
     campo: '',
     path: '',
@@ -16,35 +15,35 @@ export const useCamposCustomizados = (empresaId: number) => {
     funcionalidade: '',
   });
 
-  const listarCamposIntegracao = () => {
-    ListarCamposIntegracaoEmpresa.list(empresaId)
-      .then((data) => {
-        setCamposIntegracao(data.campos);
-      })
-      .catch(() => {
-        toast.error('Houve um erro ao tentar listar os dados. Tente novamente mais tarde');
-      })
-      .finally(() => {
-        setIsFetching(false);
-      });
+  const listarCamposIntegracao = async () => {
+    const { data } = await apiRequest<ICamposIntegracao[]>('/empresa/campos/customizados', 'GET', {
+      empresaId,
+    });
+
+    if (data) {
+      setCamposIntegracao(data);
+    }
+
+    setIsFetching(false);
   };
 
   const excluirCampoIntegracao = async (campoId: number) => {
     toggleExcluindo(campoId);
-    ExcluirCampoIntegracao.delete(campoId)
-      .then((data) => {
-        if (data.sucesso) {
-          toast.success(data.mensagem);
 
-          listarCamposIntegracao();
-          return;
-        }
+    const { sucesso, mensagem } = await apiRequest('/empresa/campos/customizados', 'DELETE', { campoId });
 
-        toast.error(data.mensagem);
-      })
-      .finally(() => {
-        toggleExcluindo(campoId);
-      });
+    if (sucesso) {
+      toast.success(mensagem);
+      toggleExcluindo(campoId);
+
+      listarCamposIntegracao();
+
+      return;
+    }
+
+    toast.error(mensagem);
+
+    toggleExcluindo(campoId);
   };
 
   const toggleExcluindo = (campoId: number) => {
@@ -77,22 +76,20 @@ export const useCamposCustomizados = (empresaId: number) => {
 
     setIsSalvando(true);
 
-    CriarCampoIntegracao.create(campoIntegracaoRecord)
-      .then((data) => {
-        if (data.sucesso) {
-          toast.success(data.mensagem);
+    const { sucesso, mensagem } = await apiRequest('/empresa/campos/customizados', 'POST', campoIntegracaoRecord);
 
-          listarCamposIntegracao();
+    if (sucesso) {
+      toast.success(mensagem);
 
-          setToggleDialogCriar(false);
-          return;
-        }
+      listarCamposIntegracao();
 
-        toast.error(data.mensagem);
-      })
-      .finally(() => {
-        setIsSalvando(false);
-      });
+      setToggleDialogCriar(false);
+      setIsSalvando(false);
+      return;
+    }
+
+    toast.error(mensagem);
+    setIsSalvando(false);
   };
 
   useEffect(() => {

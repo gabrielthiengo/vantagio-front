@@ -78,9 +78,11 @@
   }
 
   .menu-vantagio {
-    width: 3rem;
+    width: 5rem;
     padding: 1.5rem 0 1.5rem 0;
     height: 100%;
+
+    transition: 0.2s;
   }
   .menu-vantagio:hover {
     width: 16rem;
@@ -105,9 +107,7 @@
     visibility: hidden !important;
     display: none !important;
   }
-  .menu-vantagio:not(:hover) .not-invisible {
-    border-radius: unset;
-  }
+
   .menu-vantagio:hover > div > div {
     visibility: visible;
   }
@@ -115,6 +115,15 @@
     padding-left: 10px;
   }
   .menu-vantagio:not(:hover) ~ div {
-    margin-left: 3rem;
+    margin-left: 5rem;
+    transition: 0.2s;
+  }
+  .menu-vantagio:hover ~ div {
+    transition: 0.2s;
+  }
+  .menu-vantagio:not(:hover) > button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

@@ -1,22 +1,24 @@
 import { IEmpresa } from '@/interfaces/IEmpresa';
-import ListarEmpresas from '@/services/empresa/ListarEmpresas';
+import { apiRequest } from '@/services/apiRequest';
 import { useEffect, useState } from 'react';
 
 export const useEmpresas = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [empresas, setEmpresas] = useState<IEmpresa[]>([]);
-  const [total, setTTotal] = useState(0);
+  const [total, setTTotal] = useState<number | undefined>(0);
 
   async function listarEmpresas() {
     try {
       setIsLoading(true);
 
-      const data = await ListarEmpresas.execute(page);
+      const { data, total } = await apiRequest<IEmpresa[]>('/empresa', 'GET', {
+        page,
+      });
 
-      if (data.empresas) {
-        setEmpresas(data.empresas);
-        setTTotal(data.total);
+      if (data) {
+        setEmpresas(data);
+        setTTotal(total);
       }
 
       setIsLoading(false);

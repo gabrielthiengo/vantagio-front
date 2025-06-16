@@ -10,7 +10,7 @@ export const Sidebar = () => {
 
   return (
     <div className="shadow-none border-r border-gray-300 fixed bg-white menu-vantagio">
-      <div className="w-full flex flex-col mb-8 mt-2 gap-2">
+      <div className="w-full flex flex-col mb-8 min-h-32 mt-2 gap-2">
         <div className="w-full flex justify-center">
           <img src={logo} alt="logo" style={{ width: '170px' }} />
           <img className="v-logo" src={logo2} alt="logo2" style={{ height: '30px' }} />

@@ -1,5 +1,5 @@
 import { IEmpresa } from '@/interfaces/IEmpresa';
-import ListarEmpresas from '@/services/empresa/ListarEmpresas';
+import { apiRequest } from '@/services/apiRequest';
 import { useEffect, useState } from 'react';
 
 export const useConfigurarEmpresa = (cnpj: string) => {
@@ -10,10 +10,12 @@ export const useConfigurarEmpresa = (cnpj: string) => {
     try {
       setIsLoading(true);
 
-      const empresa = await ListarEmpresas.listarEmpresaPorCnpj(cnpj);
+      const { data } = await apiRequest<IEmpresa>('/empresa/obter', 'GET', {
+        cnpj,
+      });
 
-      if (empresa) {
-        setEmpresa(empresa);
+      if (data) {
+        setEmpresa(data);
       }
 
       setIsLoading(false);
