@@ -62,6 +62,8 @@ export function FaturamentoMensal() {
         total: Number(item.total ?? 0),
       }));
 
+      console.log(dadosFormatados);
+
       setDados(dadosFormatados);
       setIsLoading(false);
     } catch (err) {
