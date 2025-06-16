@@ -62,6 +62,8 @@ export function TicketMedioXNumeroVendas() {
         setVariacao(variacoes);
       }
 
+      console.log(variacoes);
+
       setDados(data);
 
       setIsLoading(false);
