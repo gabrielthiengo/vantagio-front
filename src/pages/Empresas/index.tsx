@@ -72,13 +72,13 @@ export const Empresas = () => {
 
                 <PaginationItem>
                   <PaginationLink>
-                    {page <= 1 && page * 10 > total && `Total: ${total}`}
-                    {page >= 1 && page * 10 <= total && page}
+                    {page <= 1 && page * 10 > (total ?? 0) && `Total: ${total}`}
+                    {page >= 1 && page * 10 <= (total ?? 0) && page}
                   </PaginationLink>
                 </PaginationItem>
 
                 <PaginationItem>
-                  {page * 10 < total && (
+                  {page * 10 < (total ?? 0) && (
                     <PaginationNext className="cursor-pointer" onClick={() => paginate(page + 1)} />
                   )}
                 </PaginationItem>

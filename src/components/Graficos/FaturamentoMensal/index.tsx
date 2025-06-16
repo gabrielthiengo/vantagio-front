@@ -59,7 +59,7 @@ export function FaturamentoMensal() {
 
       const dadosFormatados = dados.map((item) => ({
         ...item,
-        total: Number(item.total),
+        total: Number(item.total ?? 0),
       }));
 
       setDados(dadosFormatados);
