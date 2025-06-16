@@ -51,7 +51,7 @@ export function TicketMedioXNumeroVendas() {
 
         const variacao = ((atual - anterior) / anterior) * 100;
 
-        console.log(variacao);
+        console.log({ atual, anterior });
 
         variacoes.push({
           mes: data[i].month,
