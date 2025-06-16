@@ -45,15 +45,11 @@ export function TicketMedioXNumeroVendas() {
 
       const variacoes = [];
 
-      console.log(data);
-
       for (let i = 1; i < data.length; i++) {
         const anterior = parseFloat(data[i - 1].ticketmedio ?? 0);
         const atual = parseFloat(data[i].ticketmedio ?? 0);
 
         const variacao = ((atual - anterior) / anterior) * 100;
-
-        console.log({ anterior, atual });
 
         variacoes.push({
           mes: data[i].month,
@@ -65,8 +61,6 @@ export function TicketMedioXNumeroVendas() {
       if (variacoes.length > 0) {
         setVariacao(variacoes);
       }
-
-      console.log(variacoes);
 
       setDados(data);
 
@@ -144,16 +138,16 @@ export function TicketMedioXNumeroVendas() {
             {variacao.length > 0 && (
               <div className="flex gap-2">
                 {variacao[variacao.length - 1].tendencia === 'Crescimento' && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-sm font-medium leading-none">
                     Crescimento de {variacao[variacao.length - 1].variacao} neste mês
-                    <TrendingUp className={`h-4 w-4 'text-green-500`} />
+                    <TrendingUp className={`h-4 w-4 text-green-500`} />
                   </div>
                 )}
 
                 {variacao[variacao.length - 1].tendencia === 'Queda' && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 text-sm font-medium leading-none">
                     Queda de {variacao[variacao.length - 1].variacao} neste mês
-                    <TrendingDown className={`h-4 w-4 'text-green-500`} />
+                    <TrendingDown className={`h-4 w-4 text-red-500`} />
                   </div>
                 )}
 
