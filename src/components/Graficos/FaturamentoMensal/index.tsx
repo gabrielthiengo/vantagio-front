@@ -57,7 +57,7 @@ export function FaturamentoMensal() {
         setVariacao(variacoes);
       }
 
-      const dadosFormatados = dados.map((item) => ({
+      const dadosFormatados = data.map((item: any) => ({
         ...item,
         total: Number(item.total ?? 0),
       }));
