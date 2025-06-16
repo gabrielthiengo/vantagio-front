@@ -48,12 +48,12 @@ export function TicketMedioXNumeroVendas() {
       console.log(data);
 
       for (let i = 1; i < data.length; i++) {
-        const anterior = parseFloat(data[i - 1].total);
-        const atual = parseFloat(data[i].total);
+        const anterior = parseFloat(data[i - 1].ticketmedio ?? 0);
+        const atual = parseFloat(data[i].ticketmedio ?? 0);
 
         const variacao = ((atual - anterior) / anterior) * 100;
 
-        console.log({ anterior: data[i - 1].total, atual: data[i].total });
+        console.log({ anterior, atual });
 
         variacoes.push({
           mes: data[i].month,
