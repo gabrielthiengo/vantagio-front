@@ -9,7 +9,7 @@ export const ProtectedLayout = ({ children }: { children: JSX.Element }) => {
     return <Navigate to={'/authenticate'} />;
   }
 
-  if (user.validade && user.validade <= new Date()) {
+  if (user.validade && new Date(user.validade) <= new Date()) {
     return <Navigate to={'/authenticate'} />;
   }
 
