@@ -213,6 +213,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
                 <SelectItem value="COMPRA_REALIZADA">Compra realizada</SelectItem>
                 <SelectItem value="INATIVIDADE">Inatividade do cliente</SelectItem>
                 <SelectItem value="FEEDBACK">Solicitar feedback ao cliente</SelectItem>
+                <SelectItem value="ENGAJAMENTO">Engajamento do cliente</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -268,6 +269,7 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
                 }}
                 filtrosIn={JSON.parse(form?.evento?.parametro || '[]')}
                 evento={form?.evento?.tipoEvento || ''}
+                automacaoId={automacao?.id}
               />
             </Card>
           </div>

@@ -19,7 +19,8 @@ type CampoFiltro =
   | 'dataAniversario'
   | 'naoAplicaFiltros'
   | 'estado'
-  | 'statusPedido';
+  | 'statusPedido'
+  | 'notaEngajamento';
 
 export interface Filtro {
   campo: CampoFiltro;
@@ -30,9 +31,11 @@ export interface Filtro {
   placeholder?: string;
   tipoInput?: string;
   maxLength?: number;
+  max?: number;
 }
 
 const filtrosPermitidosPorEvento: Record<string, CampoFiltro[]> = {
+  ENGAJAMENTO: ['notaEngajamento', 'genero', 'diasSemPedido'],
   BOAS_VINDAS: ['naoAplicaFiltros', 'cidade', 'estado', 'genero', 'diasPedido'],
   INATIVIDADE: ['diasSemPedido', 'cidade', 'estado'],
   ANIVERSARIO: ['dataAniversario', 'cidade', 'estado', 'genero'],
@@ -58,6 +61,7 @@ type FiltrosAutomacaoProps = {
   evento: string;
   filtrosIn?: Filtro[];
   filtroSelecionado: (filtros: string) => void;
+  automacaoId?: number;
 };
 
 type ResponseFunction = {
@@ -68,9 +72,10 @@ type ResponseFunction = {
   placeholder?: string;
   tipoInput?: string;
   maxLength?: number;
+  max?: number;
 };
 
-export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: FiltrosAutomacaoProps) {
+export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado, automacaoId }: FiltrosAutomacaoProps) {
   const [eventoSelecionado, setEventoSelecionado] = useState<string>(evento);
   const [filtros, setFiltros] = useState<Filtro[]>([]);
   const [operadores, setOperadores] = useState<Operador[]>([]);
@@ -125,7 +130,7 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
   };
 
   useEffect(() => {
-    if (filtrosIn) {
+    if (filtrosIn && automacaoId) {
       setOperadores(['IGUAL', 'MAIOR_QUE', 'MENOR_QUE', 'DIFERENTE']);
       setFiltros(filtrosIn);
     }
@@ -159,6 +164,11 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
         setOperadores(['IGUAL', 'DIFERENTE']);
         break;
 
+      case 'notaEngajamento':
+        setOperadores(['IGUAL', 'MAIOR_QUE', 'MENOR_QUE']);
+
+        break;
+
       default:
         setOperadores(['IGUAL', 'MAIOR_QUE', 'MENOR_QUE', 'DIFERENTE']);
     }
@@ -173,6 +183,7 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
       placeholder: 'Valor',
       tipoInput: 'text',
       maxLength: 50,
+      max: 0,
     };
 
     switch (opcao) {
@@ -217,6 +228,13 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
 
       case 'ticketMedio':
         response.tipoInput = 'currency';
+        return response;
+
+      case 'notaEngajamento':
+        response.placeholder = 'Valor de 0 a 100';
+        response.tipoInput = 'number';
+        response.maxLength = 3;
+        response.max = 100;
         return response;
 
       default:
@@ -273,6 +291,8 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
                       ? 'Status do pedido'
                       : campo === 'estado'
                       ? 'Estado'
+                      : campo === 'notaEngajamento'
+                      ? 'Nota do engajamento'
                       : 'Gênero'}
                   </SelectItem>
                 ))}
@@ -320,6 +340,7 @@ export function FiltrosAutomacao({ evento, filtrosIn, filtroSelecionado }: Filtr
                 disabled={filtro.isDisabledValor}
                 type={filtro.tipoInput ?? 'text'}
                 maxLength={filtro.maxLength}
+                max={filtro.max ?? 1000}
                 placeholder={filtro.placeholder ?? 'Valor'}
                 value={filtro.valor}
                 onChange={(e) => handleAlterarFiltro(index, 'valor', e.target.value.toUpperCase())}

@@ -91,7 +91,7 @@ export default function PrimeiroAcesso() {
         <CardHeader className="flex flex-col items-center">
           <img src={logotipo} alt="logo" style={{ width: '250px' }} />
 
-          <CardDescription>A jornada de sucesso do seu e-commerce começa aqui</CardDescription>
+          <CardDescription>Venda com vantagem todos os dias</CardDescription>
         </CardHeader>
 
         <CardContent>
