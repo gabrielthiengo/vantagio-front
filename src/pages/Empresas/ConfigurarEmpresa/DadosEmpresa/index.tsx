@@ -62,7 +62,7 @@ export const DadosEmpresa = ({ empresa }: { empresa: IEmpresa }) => {
               </div>
 
               <div>
-                <Label htmlFor="ecommerce">Ecommerce</Label>
+                <Label htmlFor="ecommerce">Sistema utilizado</Label>
                 <Input
                   {...register('ecommerce')}
                   value={empresa.sistema}

@@ -13,6 +13,7 @@ class AuthController {
         response: response.data,
       };
     } catch (error: any) {
+      console.log(error);
       return {
         type: 'error',
         message: error.response?.data?.message || 'Erro desconhecido',

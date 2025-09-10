@@ -7,6 +7,7 @@ import { DadosEmpresa } from './DadosEmpresa';
 import { DadosIntegracao } from './DadosIntegracao';
 import { DadosUsuario } from './DadosUsuario';
 import { useConfigurarEmpresa } from './useConfigurarEmpresa';
+import { DadosIntegracaoMvTec } from './DadosIntegracaoMVTec';
 
 export const ConfigurarEmpresa = () => {
   const { cnpj } = useParams();
@@ -14,7 +15,7 @@ export const ConfigurarEmpresa = () => {
 
   return (
     <div className="h-full">
-      <PageHeader title={`Configurar empresa - ${empresa?.nomeFantasia}`} icon={<Building2 size={18} />} />
+      <PageHeader title={`Configurar empresa - ${empresa?.razaoSocial}`} icon={<Building2 size={18} />} />
 
       <Card className="rounded p-2">
         <Tabs defaultValue="empresa">
@@ -30,7 +31,10 @@ export const ConfigurarEmpresa = () => {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="empresa">{empresa && <DadosEmpresa empresa={empresa} />}</TabsContent>
-          <TabsContent value="integracao">{empresa?.id && <DadosIntegracao empresaId={empresa.id} />}</TabsContent>
+          <TabsContent value="integracao">
+            {empresa?.id && empresa.sistema === 'woocommerce' && <DadosIntegracao empresaId={empresa.id} />}
+            {empresa?.id && empresa.sistema === 'mvtecnologia' && <DadosIntegracaoMvTec empresaId={empresa.id} />}
+          </TabsContent>
           <TabsContent value="usuario">{empresa && <DadosUsuario empresaId={empresa.id} />}</TabsContent>
         </Tabs>
       </Card>

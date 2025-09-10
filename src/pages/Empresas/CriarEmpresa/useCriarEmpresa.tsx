@@ -16,6 +16,7 @@ export const useCriarEmpresa = () => {
     handleSubmit,
     register,
     setValue,
+    control,
     formState: { errors, isValid },
   } = useForm<CriarEmpresaSchema>({
     criteriaMode: 'all',
@@ -52,6 +53,7 @@ export const useCriarEmpresa = () => {
     isSuccess,
     errors,
     isValid,
+    control,
     register,
     handleSubmit,
     handleFormSubmit,

@@ -14,9 +14,11 @@ import { Plus } from 'lucide-react';
 import { useCriarEmpresa } from './useCriarEmpresa';
 import { InputError } from '@/components/InputErrors';
 import { ReloadIcon } from '@radix-ui/react-icons';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Controller } from 'react-hook-form';
 
 export function CriarEmpresa() {
-  const { isLoading, isValid, errors, register, handleSubmit, handleFormSubmit, setValue } = useCriarEmpresa();
+  const { isLoading, isValid, errors, control, register, handleSubmit, handleFormSubmit, setValue } = useCriarEmpresa();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -51,8 +53,23 @@ export function CriarEmpresa() {
             </div>
 
             <div>
-              <Label htmlFor="ecommerce">Ecommerce</Label>
-              <Input {...register('ecommerce')} className={`${errors.ecommerce && 'border-red-500'}`} />
+              <Label htmlFor="ecommerce">Sistema utilizado</Label>
+              <Controller
+                name="ecommerce"
+                control={control}
+                rules={{ required: 'Selecione um sistema' }}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className={errors.ecommerce ? 'border-red-500' : ''}>
+                      <SelectValue placeholder="Selecione um sistema" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="mvtecnologia">MV Tecnologia</SelectItem>
+                      <SelectItem value="woocommerce">Woocommerce</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               {errors.ecommerce && <InputError error={errors.ecommerce?.message ?? ''} />}
             </div>
 
