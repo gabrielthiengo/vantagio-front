@@ -24,6 +24,8 @@ import ListarTemplatesAutomacao, {
   TemplateAutomacaoResponse,
 } from '@/services/templates-automacao/ListarTemplatesAutomacao';
 import { NumericFormat } from 'react-number-format';
+import CardFeedback from '@/components/CardFeedback';
+import LoadingComponent from '@/components/LoadingComponent';
 
 type AutomacaoProps = {
   automacao?: AutomacaoResponse;
@@ -483,16 +485,24 @@ export function AutomacaoCriar({ automacao, dispatch }: AutomacaoProps) {
             Atenção: os dados apresentados são provisórios e estão sujeitos a mudanças durante o processamento.
           </span>
 
-          <div className="grid grid-cols-2 mt-4 gap-2">
-            {filtroCliente?.clientes.map((cliente) => {
-              return (
-                <div className="text-xs border rounded-md px-2 py-1 flex flex-col">
-                  <span className="text-gray-400">Nome:</span>
-                  <span>{cliente.pessoa.nome}</span>
-                </div>
-              );
-            })}
-          </div>
+          {!isFetchingTest && (
+            <div className="grid grid-cols-2 mt-4 gap-2">
+              {filtroCliente?.clientes.map((cliente) => {
+                return (
+                  <div className="text-xs border rounded-md px-2 py-1 flex flex-col">
+                    <span className="text-gray-400">Nome:</span>
+                    <span>{cliente.pessoa.nome}</span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {!isFetchingTest && filtroCliente?.clientes.length === 0 && (
+            <CardFeedback text="Nenhum dado encontrado para os filtros selecionados" />
+          )}
+
+          {isFetchingTest && <LoadingComponent />}
         </Card>
       )}
     </div>
