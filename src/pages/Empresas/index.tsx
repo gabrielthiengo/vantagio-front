@@ -43,7 +43,7 @@ export const Empresas = () => {
             <TableBody>
               {empresas.map((empresa) => (
                 <TableRow key={empresa.id}>
-                  <TableCell>{empresa.nomeFantasia}</TableCell>
+                  <TableCell>{empresa.razaoSocial}</TableCell>
                   <TableCell>{empresa.cnpj}</TableCell>
                   <TableCell>{empresa.sistema}</TableCell>
                   <TableCell className="text-center">
