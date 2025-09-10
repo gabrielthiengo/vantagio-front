@@ -1,7 +1,7 @@
-import { IConfiguracaoDatabaseMV } from '@/interfaces/IConfiguracaoDatabaseMV';
-import { IQueryDatabaseMV } from '@/interfaces/IQueryDatabaseMV';
-import { IScheduleJobMV } from '@/interfaces/IScheduleJobMv';
-import { apiRequest } from '@/services/apiRequest';
+import { IConfiguracaoDatabaseMV } from '../../../../interfaces/IConfiguracaoDatabaseMV';
+import { IQueryDatabaseMV } from '../../../../interfaces/IQueryDatabaseMV';
+import { IScheduleJobMV } from '../../../../interfaces/IScheduleJobMv';
+import { apiRequest } from '../../../../services/apiRequest';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
