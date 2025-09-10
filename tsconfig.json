@@ -4,6 +4,7 @@
     "module": "ESNext",
     "lib": ["ES2021", "DOM"],
     "jsx": "react-jsx",
+    "ignoreDeprecations": "6.0",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
