@@ -39,11 +39,11 @@ export const Sidebar = () => {
         <Users size={18} />
       </SidebarItem>
 
-      <SidebarItem title="Campanhas" page="/campanha">
+      {/* <SidebarItem title="Campanhas" page="/campanha">
         <LineChart size={18} />
-      </SidebarItem>
+      </SidebarItem> */}
 
-      <SidebarItem title="Automações" page="/automacao">
+      <SidebarItem title="Automações" page="/regua">
         <Boxes size={18} />
       </SidebarItem>
 

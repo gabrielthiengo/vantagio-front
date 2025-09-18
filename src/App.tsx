@@ -10,17 +10,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Indicadores } from './pages/Indicadores';
 import { Empresas } from './pages/Empresas';
 import { ConfigurarEmpresa } from './pages/Empresas/ConfigurarEmpresa';
-import { Automacoes } from './pages/Automacoes';
 import { Campanhas } from './pages/Campanhas';
 import Clientes from './pages/Clientes';
 import Pedidos from './pages/Pedidos';
 import ClienteDetalhe from './pages/ClienteDetalhe';
-import { AutomacaoCriar } from './pages/AutomcacaoCriar';
 import PrimeiroAcesso from './pages/PrimeiroAcesso';
 import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 import PedidoDetalhe from './pages/PedidoDetalhe';
 import AutomacaoInsigt from './pages/AutomacaoInsigt';
 import CampanhaInsigt from './pages/CampanhaInsigt';
+import ReguaList from './pages/ReguaNotificacao/ReguaList';
+import ReguaDetalhe from './pages/ReguaNotificacao/ReguaDetalhe';
 
 export default function App() {
   return (
@@ -68,10 +68,10 @@ export default function App() {
           />
 
           <Route
-            path="/automacao"
+            path="/regua"
             element={
               <ProtectedLayout>
-                <Automacoes />
+                <ReguaList />
               </ProtectedLayout>
             }
           />
@@ -86,10 +86,10 @@ export default function App() {
           />
 
           <Route
-            path="/automacao/criar"
+            path="/regua/form"
             element={
               <ProtectedLayout>
-                <AutomacaoCriar />
+                <ReguaDetalhe />
               </ProtectedLayout>
             }
           />
