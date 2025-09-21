@@ -1,8 +1,10 @@
+import { ITemplate } from './ITemplate';
+
 export interface IEtapa {
   ordem: number;
   delayDias: number;
   canal: string;
-  templateId: number;
+  template: ITemplate;
   condicaoSaida: string;
   canalLabel?: string | null;
   templateLabel?: string | null;

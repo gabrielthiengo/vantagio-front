@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import InputBlock from '@/components/InputBlock';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -11,9 +11,18 @@ import CardFeedback from '@/components/CardFeedback';
 import { InputError } from '@/components/InputErrors';
 import { useReguaDetalhe } from './useReguaDetalhe';
 import { Controller } from 'react-hook-form';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import Template from '@/components/Template';
 
 const ReguaDetalhe: React.FC = () => {
+  const [toggleTemplate, setToggleTemplate] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,9 +33,10 @@ const ReguaDetalhe: React.FC = () => {
     adicionarEtapa,
     errors,
     control,
+    templates,
+    condicoes,
+    setTemplates,
   } = useReguaDetalhe();
-
-  console.log(errors);
 
   return (
     <div>
@@ -100,7 +110,10 @@ const ReguaDetalhe: React.FC = () => {
         {/* Criar etapas */}
         <Card>
           <CardHeader>Criar etapas da automação</CardHeader>
+
           <CardContent className="flex flex-col gap-1">
+            <Separator />
+
             <InputBlock label="Canal" isRequired>
               <Select onValueChange={(v) => setEtapaRecord({ ...etapaRecord, canal: v })} value={etapaRecord.canal}>
                 <SelectTrigger>
@@ -117,16 +130,30 @@ const ReguaDetalhe: React.FC = () => {
 
             <InputBlock label="Template" isRequired>
               <Select
-                onValueChange={(v) => setEtapaRecord({ ...etapaRecord, templateId: Number(v) })}
-                value={String(etapaRecord.templateId ?? '')}
+                onValueChange={(v) =>
+                  setEtapaRecord({
+                    ...etapaRecord,
+                    template: {
+                      ...etapaRecord.template,
+                      id: Number(v),
+                    },
+                  })
+                }
+                value={String(etapaRecord.template.id ?? '')}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione um template" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="0">Selecione</SelectItem>
-                  <SelectItem value="1">Template whatsapp</SelectItem>
-                  <SelectItem value="2">Template email padrão</SelectItem>
+
+                  {templates.map((template) => {
+                    return (
+                      <SelectItem key={template.id} value={String(template.id ?? '')}>
+                        {template.nome}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </InputBlock>
@@ -156,17 +183,53 @@ const ReguaDetalhe: React.FC = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="0">Selecione</SelectItem>
-                  <SelectItem value="realizou_compra">Cliente realizou uma compra</SelectItem>
-                  <SelectItem value="solicitou_exclusão">Cliente solicitou para ser retirado</SelectItem>
+                  {condicoes.map((condicao) => {
+                    return (
+                      <SelectItem key={condicao} value={condicao}>
+                        {condicao}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </InputBlock>
 
-            <div className="flex justify-end mt-5">
+            <div className="flex justify-between mt-5">
+              <Dialog open={toggleTemplate}>
+                <form>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="flex items-center gap-1"
+                      variant="outline"
+                      onClick={() => setToggleTemplate(true)}
+                    >
+                      <Plus size={14} /> Criar template
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[550px]">
+                    <DialogHeader>
+                      <DialogTitle>Criar template</DialogTitle>
+                      <DialogDescription>
+                        Crie seus templates de whatsapp e/ou email para serem utilizados nas automações.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div>
+                      <Template
+                        onCreate={(template) => {
+                          setTemplates((prev) => [...prev, template]);
+                          setToggleTemplate(false);
+                        }}
+                      />
+                    </div>
+                  </DialogContent>
+                </form>
+              </Dialog>
+
               <Button
                 variant="outline"
                 onClick={adicionarEtapa}
-                disabled={etapaRecord.canal === '0' || etapaRecord.templateId === 0}
+                disabled={etapaRecord.canal === '0' || etapaRecord.template.id === 0}
               >
                 <Plus size={14} /> Adicionar etapa
               </Button>
@@ -177,7 +240,10 @@ const ReguaDetalhe: React.FC = () => {
         {/* Listagem de etapas */}
         <Card className="lg:col-span-2">
           <CardHeader>Etapas da automação</CardHeader>
+
           <CardContent>
+            <Separator />
+
             {etapaList.length === 0 && <CardFeedback text="Nenhuma etapa adicionada" />}
             {etapaList.map((etapa, index) => (
               <Card key={index} className="p-4 mb-2 flex flex-col gap-1">
@@ -188,7 +254,7 @@ const ReguaDetalhe: React.FC = () => {
                   <span>{etapa.canal}</span>
                 </InputBlock>
                 <InputBlock label="Template">
-                  <span>{etapa.templateId}</span>
+                  <span>{etapa.template.nome}</span>
                 </InputBlock>
                 <InputBlock label="Delay">
                   <span>{etapa.delayDias ?? 0}</span>

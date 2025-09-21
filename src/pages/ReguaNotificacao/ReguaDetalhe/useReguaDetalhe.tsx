@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { etapaSchema, reguaDetalheSchema, ReguaDetalheSchema } from './types';
+import { reguaDetalheSchema, ReguaDetalheSchema } from './types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { apiRequest } from '@/services/apiRequest';
 import { IEtapa, IRegua } from '@/interfaces/IRegua';
+import { ITemplate } from '@/interfaces/ITemplate';
+
+type ReguaDadosRequest = {
+  templates: ITemplate[];
+  condicaoSaidas: string[];
+};
 
 export const useReguaDetalhe = () => {
   const navigate = useNavigate();
@@ -29,15 +35,16 @@ export const useReguaDetalhe = () => {
     condicaoSaida: '0',
     delayDias: 0,
     ordem: 0,
-    templateId: 0,
+    template: {} as ITemplate,
     canalLabel: '',
     condicaoLabel: '',
     templateLabel: '',
   });
   const [etapaList, setEtapaList] = useState<IEtapa[]>([]);
+  const [templates, setTemplates] = useState<ITemplate[]>([]);
+  const [condicoes, setCondicoes] = useState<string[]>([]);
 
   async function handleFormSubmit(regua: ReguaDetalheSchema): Promise<void | string> {
-    console.log('aqiio');
     setIsLoading(true);
     setIsSuccess(false);
 
@@ -45,13 +52,11 @@ export const useReguaDetalhe = () => {
       ordem: index,
       delayDias: e.delayDias,
       canal: e.canal,
-      templateId: e.templateId,
+      templateId: e.template.id,
       condicaoSaida: e.condicaoSaida,
     }));
 
     if (regua.dataFim === '') regua.dataFim = null;
-
-    console.log(regua);
 
     const { sucesso, mensagem } = await apiRequest<IRegua>('/regua', 'POST', {
       nome: regua.nome,
@@ -76,7 +81,21 @@ export const useReguaDetalhe = () => {
     navigate(`/regua`);
   }
 
-  async function getInitialData() {}
+  async function getInitialData() {
+    const { data } = await apiRequest<ReguaDadosRequest>('/regua/dados');
+
+    if (data?.templates) {
+      setTemplates(data.templates);
+    }
+
+    if (data?.condicaoSaidas) {
+      setCondicoes(data.condicaoSaidas);
+    }
+  }
+
+  useEffect(() => {
+    getInitialData();
+  }, []);
 
   const adicionarEtapa = () => {
     setEtapaList((prev) => [...prev, etapaRecord]);
@@ -86,7 +105,7 @@ export const useReguaDetalhe = () => {
       condicaoSaida: '0',
       delayDias: 0,
       ordem: 0,
-      templateId: 0,
+      template: {} as ITemplate,
       canalLabel: '',
       condicaoLabel: '',
       templateLabel: '',
@@ -103,6 +122,8 @@ export const useReguaDetalhe = () => {
     control,
     reguaRecord,
     etapaRecord,
+    templates,
+    condicoes,
     register,
     handleSubmit,
     handleFormSubmit,
@@ -112,5 +133,6 @@ export const useReguaDetalhe = () => {
     etapaList,
     setEtapaList,
     adicionarEtapa,
+    setTemplates,
   };
 };
