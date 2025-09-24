@@ -1,4 +1,4 @@
-import { BarChart3, Boxes, HomeIcon, ShoppingBasket, Users, Building2, LineChart, LogOut } from 'lucide-react';
+import { BarChart3, Boxes, HomeIcon, ShoppingBasket, Users, Building2, LogOut } from 'lucide-react';
 import { SidebarItem } from '../SidebarItem';
 import logo from '@/assets/logo-vantagio.jpeg';
 import logo2 from '@/assets/VLogo.png';

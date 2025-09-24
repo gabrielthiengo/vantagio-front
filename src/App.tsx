@@ -10,17 +10,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Indicadores } from './pages/Indicadores';
 import { Empresas } from './pages/Empresas';
 import { ConfigurarEmpresa } from './pages/Empresas/ConfigurarEmpresa';
-import { Campanhas } from './pages/Campanhas';
 import Clientes from './pages/Clientes';
 import Pedidos from './pages/Pedidos';
 import ClienteDetalhe from './pages/ClienteDetalhe';
 import PrimeiroAcesso from './pages/PrimeiroAcesso';
-import { CampanhaDetalhe } from './pages/CampanhaDetalhe';
 import PedidoDetalhe from './pages/PedidoDetalhe';
-import AutomacaoInsigt from './pages/AutomacaoInsigt';
-import CampanhaInsigt from './pages/CampanhaInsigt';
 import ReguaList from './pages/ReguaNotificacao/ReguaList';
 import ReguaDetalhe from './pages/ReguaNotificacao/ReguaDetalhe';
+import ReguaInsights from './pages/ReguaNotificacao/ReguaInsights';
 
 export default function App() {
   return (
@@ -77,10 +74,10 @@ export default function App() {
           />
 
           <Route
-            path="/automacao/insigt/:id"
+            path="/regua/form/:id"
             element={
               <ProtectedLayout>
-                <AutomacaoInsigt />
+                <ReguaDetalhe />
               </ProtectedLayout>
             }
           />
@@ -95,28 +92,10 @@ export default function App() {
           />
 
           <Route
-            path="/campanha"
+            path="/regua/insight/:id"
             element={
               <ProtectedLayout>
-                <Campanhas />
-              </ProtectedLayout>
-            }
-          />
-
-          <Route
-            path="/campanha/detalhe"
-            element={
-              <ProtectedLayout>
-                <CampanhaDetalhe />
-              </ProtectedLayout>
-            }
-          />
-
-          <Route
-            path="/campanha/insigt/:id"
-            element={
-              <ProtectedLayout>
-                <CampanhaInsigt />
+                <ReguaInsights />
               </ProtectedLayout>
             }
           />

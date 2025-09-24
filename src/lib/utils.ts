@@ -49,19 +49,25 @@ export function formatarEndereco(endereco: EnderecoParams): string {
 }
 
 export function formatarData(dataIso: string, onlyDate?: boolean): string {
-  if (dataIso === 'null') {
-    return '';
+  if (dataIso === 'null') return '';
+
+  const [data, hora] = dataIso.split('T');
+
+  const [ano, mes, dia] = data.split('-').map(Number);
+
+  let horas = '';
+  let minutos = '';
+
+  if (hora) {
+    const [h, m] = hora.split(':');
+
+    horas = h;
+    minutos = m;
   }
 
-  const data = new Date(dataIso);
-
-  const dia = String(data.getDate()).padStart(2, '0');
-  const mes = String(data.getMonth() + 1).padStart(2, '0');
-  const ano = data.getFullYear();
-  const horas = String(data.getHours()).padStart(2, '0');
-  const minutos = String(data.getMinutes()).padStart(2, '0');
-
-  return `${dia}/${mes}/${ano} ${!onlyDate ? horas + ':' + minutos : ''}`;
+  return `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${ano} ${
+    !onlyDate ? `${horas}:${minutos}` : ''
+  }`;
 }
 
 export function formatarCPF(cpf: string | null): string {

@@ -5,6 +5,7 @@
     "lib": ["ES2021", "DOM"],
     "jsx": "react-jsx",
     "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,

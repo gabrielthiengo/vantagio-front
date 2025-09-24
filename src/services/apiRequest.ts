@@ -12,13 +12,15 @@ export type ApiResponse<T = unknown> = {
 export const apiRequest = async <T>(
   endpoint: string,
   method: MetodoHttp = 'GET',
-  payload?: any,
+  body?: any,
+  params?: any,
 ): Promise<ApiResponse<T>> => {
   try {
     const response = await Api.request<ApiResponse<T>>({
       url: endpoint,
       method,
-      ...(method === 'GET' || method === 'DELETE' ? { params: payload } : { data: payload }),
+      params: params,
+      data: body,
     });
 
     return response.data;

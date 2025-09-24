@@ -37,6 +37,7 @@ export default function ClienteDetalhe() {
       <PageHeader
         title={`Cliente - ${cliente?.pessoa?.nome ? cliente?.pessoa?.nome : 'Carregando...'}`}
         icon={<UserRoundSearch size={18} />}
+        previousPage="/cliente"
       />
 
       {!isFetching && (

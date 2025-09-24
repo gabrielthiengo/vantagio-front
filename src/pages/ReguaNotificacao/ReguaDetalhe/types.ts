@@ -28,11 +28,16 @@ export const etapaSchema = z.object({
   canal: z.string().nullable(),
   templateId: z.number().nullable(),
   condicaoSaida: z.string().nullable(),
+  qtdEnviosDia: z
+    .number()
+    .min(5, 'O valor mínimo deve ser maior ou igual a 5')
+    .max(1000, 'O valor máxio deve ser menor ou igual a 1000'),
 });
 
 export type EtapaSchema = z.infer<typeof etapaSchema>;
 
 export const reguaDetalheSchema = z.object({
+  id: z.number().optional(),
   nome: z.string().min(1, 'O campo nome é obrigatório'),
   descricao: z.string().nullable(),
   gatilhoId: z.number(),

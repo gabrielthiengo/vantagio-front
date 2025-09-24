@@ -1,13 +1,22 @@
 import { ITemplate } from '@/interfaces/ITemplate';
 import { templateStringParaJSON } from '@/lib/template-string-json';
 import { apiRequest } from '@/services/apiRequest';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
-export const useTemplate = () => {
+export const useTemplate = ({ canal }: { canal?: string }) => {
   const [template, setTemplate] = useState<ITemplate>({} as ITemplate);
   const [variaveis, setVariaveis] = useState([]);
   const [isSalvando, setIsSalvando] = useState(false);
+
+  useEffect(() => {
+    if (canal) {
+      setTemplate({
+        ...template,
+        canal,
+      });
+    }
+  }, []);
 
   const extrairVariaveisTexto = (texto: string) => {
     return templateStringParaJSON(texto);

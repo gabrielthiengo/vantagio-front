@@ -1,11 +1,15 @@
 import { ITemplate } from './ITemplate';
 
 export interface IEtapa {
+  id?: number;
+  reguaId?: number;
+  templateId?: number;
   ordem: number;
   delayDias: number;
   canal: string;
-  template: ITemplate;
-  condicaoSaida: string;
+  template: ITemplate | null;
+  condicaoSaida: string | null;
+  qtdEnviosDia: number;
   canalLabel?: string | null;
   templateLabel?: string | null;
   condicaoLabel?: string | null;
@@ -21,4 +25,5 @@ export interface IRegua {
   isAtivo?: boolean | null;
   dataUltimoProcessamento?: Date | null;
   etapas: IEtapa[];
+  disparos?: number;
 }

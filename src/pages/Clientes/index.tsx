@@ -60,9 +60,7 @@ export default function Clientes() {
   };
 
   useEffect(() => {
-    if (refetchData) {
-      buscarClientes();
-    }
+    buscarClientes();
   }, [filtros.page, refetchData]);
 
   return (

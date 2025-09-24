@@ -9,11 +9,12 @@ import { ReloadIcon } from '@radix-ui/react-icons';
 import { ITemplate } from '@/interfaces/ITemplate';
 
 type TemplateProps = {
+  canal?: string;
   onCreate: (template: ITemplate) => void;
 };
 
-const Template = ({ onCreate }: TemplateProps) => {
-  const { template, isSalvando, setTemplate, salvarTemplate } = useTemplate();
+const Template = ({ canal, onCreate }: TemplateProps) => {
+  const { template, isSalvando, setTemplate, salvarTemplate } = useTemplate({ canal });
 
   const createTemplate = () => {
     salvarTemplate().then((template) => {
