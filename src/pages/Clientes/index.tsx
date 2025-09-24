@@ -33,6 +33,8 @@ export default function Clientes() {
   const [isFetching, setIsFetching] = useState(false);
   const [refetchData, setRefetchData] = useState(true);
 
+  console.log('teste');
+
   const handleUpdateFiltro = (field: string, value: string) => {
     setFiltros({
       ...filtros,
