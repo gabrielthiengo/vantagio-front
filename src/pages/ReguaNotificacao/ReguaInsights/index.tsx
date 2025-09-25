@@ -18,7 +18,7 @@ const ReguaInsights: React.FC = () => {
       <PageHeader title={`Insights da automação`} icon={<LineChartIcon size={18} />} previousPage="/regua" />
 
       {!isLoading ? (
-        <Card className="rounded p-2 flex gap-2 ">
+        <Card className="rounded p-2 flex flex-col gap-2 2xl:flex-row">
           <Card className="rounded p-2 flex flex-col w-full">
             <div>
               <span>{reguaRecord.nome}</span>

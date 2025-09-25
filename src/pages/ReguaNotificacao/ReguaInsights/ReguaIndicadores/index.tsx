@@ -8,7 +8,7 @@ const ReguaIndicadores = ({ reguaId }: { reguaId: number }) => {
 
       <Separator className="mt-2 mb-2" />
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <IndicadorStatusEntrega reguaId={reguaId} />
 
         <IndicadorStatusInstancia reguaId={reguaId} />

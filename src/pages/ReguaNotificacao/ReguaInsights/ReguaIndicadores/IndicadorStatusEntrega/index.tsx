@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
 import { Separator } from '@/components/ui/separator';
-import { Cell, Legend, Pie, PieChart } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Tooltip, XAxis, YAxis } from 'recharts';
 import { useIndicadorStatusEntrega } from './useIndicadorStatusEntrega';
 import LoadingComponent from '@/components/LoadingComponent';
 
@@ -32,15 +32,23 @@ const IndicadorStatusEntrega = ({ reguaId }: { reguaId: number }) => {
 
           <CardContent className="pl-3 pr-3 pb-3 m-0 ">
             <ChartContainer config={chartConfig}>
-              <PieChart>
-                <Pie data={indicador} dataKey="quantidade" nameKey="status" cx="50%" cy="50%" outerRadius={80} label>
+              <BarChart data={indicador}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="status" name="Status" />
+                <YAxis />
+                <Tooltip
+                  formatter={(value, entry, index) => {
+                    console.log({ value, entry, index });
+                    return value;
+                  }}
+                />
+
+                <Bar dataKey="quantidade" name="Status">
                   {indicador.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[entry.status]} />
                   ))}
-                </Pie>
-
-                <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              </PieChart>
+                </Bar>
+              </BarChart>
             </ChartContainer>
           </CardContent>
         </Card>
