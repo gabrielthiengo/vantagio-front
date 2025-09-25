@@ -2,10 +2,9 @@ import ClientesInativos from '@/components/Cards/ClientesInativos';
 import FaturamentoMesAtualAnterior from '@/components/Cards/FaturamentoMesAtualAnterior';
 import NovosClientes from '@/components/Cards/NovosClientes';
 import TicketMedioMesAtAnt from '@/components/Cards/TicketMedioMesAtAnt';
-import { FaturamentoMensal } from '@/components/Graficos/FaturamentoMensal';
-import { TicketMedioXNumeroVendas } from '@/components/Graficos/TicketMedioNumVendas';
 import NotificacaoAlertas from '@/components/NotificacaoAlertas';
 import Recomendacoes from '@/components/Recomendacoes';
+import WhatsappMensagem from '@/components/WhatsappMensagem';
 
 export const Inicio = () => {
   return (
@@ -27,8 +26,7 @@ export const Inicio = () => {
           </div>
         </div>
         <div className="grid grid-rows-2 gap-3 w-1/3 ">
-          <FaturamentoMensal />
-          <TicketMedioXNumeroVendas />
+          <WhatsappMensagem />
         </div>
       </div>
     </div>
