@@ -37,12 +37,12 @@ const WhatsappMensagem = () => {
                     </div>
                   </div>
 
-                  <div className="flex-1 overflow-y-auto mb-4 space-y-2">
+                  <div className="flex-1 overflow-y-auto mb-4 space-y-2 ">
                     {mensagem.mensagens.map((m) => {
                       return (
                         <div className="flex items-start space-x-3">
                           <div className="mb-1">
-                            <div className="bg-white p-3 rounded-xl shadow max-w-xs relative">
+                            <div className="bg-white p-3 rounded-xl shadow max-w-xs relative min-w-96">
                               <p className="text-gray-800 mb-2 text-sm">{m.mensagem}</p>
                               <span className="text-xs text-gray-400 absolute bottom-1 right-2 mt-1">
                                 {formatarData(String(m.createdAt))}
