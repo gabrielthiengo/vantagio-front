@@ -25,10 +25,6 @@ export const Sidebar = () => {
         <HomeIcon size={18} />
       </SidebarItem>
 
-      {/* <SidebarItem title="Indicadores" page="/indicadores">
-        <BarChart3 size={18} />
-      </SidebarItem> */}
-
       {/* <SidebarItem title="Pedidos" page="/pedido">
         <ShoppingBasket size={18} />
       </SidebarItem> */}
