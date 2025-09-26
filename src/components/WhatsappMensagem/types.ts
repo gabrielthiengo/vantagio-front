@@ -13,4 +13,5 @@ export interface IMensagemWhatsapp {
   email?: string | null;
   pessoa?: IPessoa | null;
   mensagens: IMensagem[];
+  isEncerrada: boolean;
 }

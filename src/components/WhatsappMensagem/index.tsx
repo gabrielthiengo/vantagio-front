@@ -5,9 +5,31 @@ import LoadingComponent from '../LoadingComponent';
 import { formatarData } from '@/lib/utils';
 import { Button } from '../ui/button';
 import CardFeedback from '../CardFeedback';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../ui/alert-dialog';
+import { ReloadIcon } from '@radix-ui/react-icons';
 
 const WhatsappMensagem = () => {
-  const { isLoading, mensagens } = useMensagens();
+  const {
+    isLoading,
+    status,
+    mensagens,
+    isEncerrando,
+    setStatus,
+    toggleEncerrar,
+    nomeCliente,
+    setNomeCliente,
+    setToggleEncerrar,
+    inativarConversa,
+  } = useMensagens();
+
   return (
     <Card>
       {!isLoading && (
@@ -22,6 +44,25 @@ const WhatsappMensagem = () => {
               <p className="text-xs text-muted-foreground mb-2 mt-0">
                 Mensagens recebidas de clientes que responderam às mensagens enviadas pela automação.
               </p>
+
+              <div className="flex items-center gap-2">
+                <button
+                  className={`px-4 rounded-xl text-xs border bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300 ${
+                    status === 'ativas' && 'bg-green-200 text-green-600 hover:bg-green-300'
+                  }`}
+                  onClick={() => setStatus('ativas')}
+                >
+                  Ativas
+                </button>
+                <button
+                  className={`px-4 rounded-xl text-xs border bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300 ${
+                    status === 'encerradas' && 'bg-red-200 text-red-600 hover:bg-red-300'
+                  }`}
+                  onClick={() => setStatus('encerradas')}
+                >
+                  Encerradas
+                </button>
+              </div>
             </div>
           </CardHeader>
 
@@ -55,7 +96,15 @@ const WhatsappMensagem = () => {
                   </div>
 
                   <div className="flex items-center justify-end gap-2">
-                    <Button variant={'ghost'} className="hover:bg-gray-300">
+                    <Button
+                      variant={'ghost'}
+                      disabled={mensagem.isEncerrada}
+                      className="hover:bg-gray-300"
+                      onClick={() => {
+                        setNomeCliente(mensagem.mensagens[0].nome);
+                        setToggleEncerrar(true);
+                      }}
+                    >
                       Encerrar conversa
                     </Button>
                     <Button
@@ -75,6 +124,26 @@ const WhatsappMensagem = () => {
           </CardContent>
         </>
       )}
+
+      <AlertDialog open={toggleEncerrar} onOpenChange={setToggleEncerrar}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Deseja realmente encerrar esta conversa?</AlertDialogTitle>
+            <AlertDialogDescription>As conversas serão automaticamente encerradas após 24 horas</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-5">
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            {!isEncerrando ? (
+              <Button onClick={() => inativarConversa(nomeCliente)}>Continuar</Button>
+            ) : (
+              <Button disabled>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Salvando...
+              </Button>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {isLoading && <LoadingComponent />}
     </Card>
