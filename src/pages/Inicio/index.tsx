@@ -2,6 +2,7 @@ import ClientesInativos from '@/components/Cards/ClientesInativos';
 import FaturamentoMesAtualAnterior from '@/components/Cards/FaturamentoMesAtualAnterior';
 import NovosClientes from '@/components/Cards/NovosClientes';
 import TicketMedioMesAtAnt from '@/components/Cards/TicketMedioMesAtAnt';
+import CupomDesconto from '@/components/CupomDesconto';
 import NotificacaoAlertas from '@/components/NotificacaoAlertas';
 import Recomendacoes from '@/components/Recomendacoes';
 import WhatsappMensagem from '@/components/WhatsappMensagem';
@@ -21,6 +22,7 @@ export const Inicio = () => {
       <div className="flex gap-3 mt-3">
         <div className="flex-1">
           <div className="w-full flex flex-col gap-3">
+            <CupomDesconto />
             <NotificacaoAlertas />
             <Recomendacoes />
           </div>

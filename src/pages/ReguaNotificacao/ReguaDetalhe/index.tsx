@@ -23,6 +23,8 @@ import Template from '@/components/Template';
 import { useParams } from 'react-router-dom';
 import LoadingComponent from '@/components/LoadingComponent';
 import { ITemplate } from '@/interfaces/ITemplate';
+import { Checkbox } from '@/components/ui/checkbox';
+import { toast } from 'react-toastify';
 
 const ReguaDetalhe: React.FC = () => {
   const { id: reguaId } = useParams();
@@ -43,10 +45,14 @@ const ReguaDetalhe: React.FC = () => {
     condicoes,
     gatilhos,
     isLoadingTemplate,
+    cupomRecord,
+    setCupomRecord,
     setTemplates,
     removerEtapa,
     atualizarReguaNotificacao,
     listarTemplates,
+    limparEtapaRecord,
+    existeCupomEtapaAnterior,
   } = useReguaDetalhe(Number(reguaId));
 
   return (
@@ -242,61 +248,206 @@ const ReguaDetalhe: React.FC = () => {
                 </Select>
               </InputBlock>
 
-              <InputBlock
-                label="Tempo de espera (em dias)"
-                info="Defina quantos dias devem passar após a conclusão da etapa anterior para que esta etapa seja executada. Por exemplo, se você colocar ‘3’, esta etapa será iniciada 3 dias depois da etapa anterior."
-              >
-                <Input
-                  type="number"
-                  min={0}
-                  value={etapaRecord.delayDias}
-                  onChange={(e) => setEtapaRecord({ ...etapaRecord, delayDias: Number(e.target.value) })}
-                  disabled={etapaList.length === 0 || new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
-                />
-              </InputBlock>
-
-              <InputBlock
-                label="Critério de saída"
-                info="Defina a condição que fará com que esta etapa ou automação seja encerrada ou pule para a próxima etapa. Por exemplo, se o cliente atender a determinada condição, ele será removido desta automação."
-              >
-                <Select
-                  onValueChange={(v) => setEtapaRecord({ ...etapaRecord, condicaoSaida: v })}
-                  value={etapaRecord.condicaoSaida ?? ''}
-                  disabled={
-                    etapaRecord.canal === 'atividade' || new Date(reguaRecord.dataFim ?? new Date()) < new Date()
-                  }
+              <div className="flex gap-2">
+                <InputBlock
+                  label="Tempo de espera (em dias)"
+                  info="Defina quantos dias devem passar após a conclusão da etapa anterior para que esta etapa seja executada. Por exemplo, se você colocar ‘3’, esta etapa será iniciada 3 dias depois da etapa anterior."
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione uma condição" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="0">Selecione</SelectItem>
-                    {condicoes.map((condicao) => {
-                      return (
-                        <SelectItem key={condicao} value={condicao}>
-                          {condicao}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-              </InputBlock>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={etapaRecord.delayDias}
+                    onChange={(e) => setEtapaRecord({ ...etapaRecord, delayDias: Number(e.target.value) })}
+                    disabled={etapaList.length === 0 || new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                  />
+                </InputBlock>
 
-              <InputBlock
-                label="Qtd máxima de envios por dia"
-                info="Estabeleça a quantidade máxima de disparos diários permitidos para esta etapa.
+                <InputBlock
+                  label="Critério de saída"
+                  info="Defina a condição que fará com que esta etapa ou automação seja encerrada ou pule para a próxima etapa. Por exemplo, se o cliente atender a determinada condição, ele será removido desta automação."
+                >
+                  <Select
+                    onValueChange={(v) => setEtapaRecord({ ...etapaRecord, condicaoSaida: v })}
+                    value={etapaRecord.condicaoSaida ?? ''}
+                    disabled={
+                      etapaRecord.canal === 'atividade' || new Date(reguaRecord.dataFim ?? new Date()) < new Date()
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione uma condição" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="0">Selecione</SelectItem>
+                      {condicoes.map((condicao) => {
+                        return (
+                          <SelectItem key={condicao} value={condicao}>
+                            {condicao}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                </InputBlock>
+
+                <InputBlock
+                  label="Qtd máxima de envios por dia"
+                  info="Estabeleça a quantidade máxima de disparos diários permitidos para esta etapa.
                 O mínimo são 5 e o máximo são 1000
                 "
-              >
-                <Input
-                  type="number"
-                  min={5}
-                  max={1000}
-                  value={etapaRecord.qtdEnviosDia}
-                  onChange={(e) => setEtapaRecord({ ...etapaRecord, qtdEnviosDia: Number(e.target.value) })}
-                  disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
-                />
-              </InputBlock>
+                >
+                  <Input
+                    type="number"
+                    min={5}
+                    max={1000}
+                    value={etapaRecord.qtdEnviosDia}
+                    onChange={(e) => setEtapaRecord({ ...etapaRecord, qtdEnviosDia: Number(e.target.value) })}
+                    disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                  />
+                </InputBlock>
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2 text-xs mb-2 mt-2">
+                  <Checkbox
+                    value={String(etapaRecord.isEnviarCupomEtapaAnterior ?? false)}
+                    onCheckedChange={(e) => {
+                      setEtapaRecord({ ...etapaRecord, isEnviarCupomEtapaAnterior: Boolean(e), isUtilizaCupom: false });
+
+                      limparEtapaRecord();
+                    }}
+                    disabled={
+                      !existeCupomEtapaAnterior() ? true : new Date(reguaRecord.dataFim ?? new Date()) < new Date()
+                    }
+                  />
+                  Deseja enviar o cupom da etapa anterior?
+                </div>
+
+                <div className="flex items-center gap-2 text-xs">
+                  <Checkbox
+                    checked={etapaRecord.isUtilizaCupom ?? false}
+                    onCheckedChange={(e) => {
+                      if (e) {
+                        setEtapaRecord({ ...etapaRecord, isUtilizaCupom: true });
+                      } else {
+                        setEtapaRecord({ ...etapaRecord, isUtilizaCupom: false });
+                        limparEtapaRecord();
+                      }
+                    }}
+                    disabled={
+                      new Date(reguaRecord.dataFim ?? new Date()) < new Date() ||
+                      (etapaRecord.isEnviarCupomEtapaAnterior ?? false)
+                    }
+                  />
+                  Deseja criar cupom de desconto?
+                </div>
+
+                {etapaRecord.isUtilizaCupom && etapaRecord.isUtilizaCupom === true && (
+                  <div className=" mt-2">
+                    <div className="flex gap-2">
+                      <InputBlock label="Tipo do desconto" isRequired>
+                        <Select
+                          key={'Tipo do desconto'}
+                          onValueChange={(v) => setCupomRecord({ ...cupomRecord, tipoDesconto: v })}
+                          value={cupomRecord.tipoDesconto ?? 'percentual'}
+                          disabled={
+                            etapaRecord.canal === 'atividade' ||
+                            new Date(reguaRecord.dataFim ?? new Date()) < new Date()
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecione uma condição" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="percentual">Percentual</SelectItem>
+                            <SelectItem value="fixo">Valor fixo</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </InputBlock>
+
+                      <InputBlock label="Valor do desconto" isRequired>
+                        {cupomRecord.tipoDesconto === 'percentual' ? (
+                          <Input
+                            type="number"
+                            placeholder="Ex: 10%"
+                            min={1}
+                            max={100}
+                            value={cupomRecord.valorDesconto}
+                            onChange={(e) => {
+                              if (Number(e.target.value) > 100) {
+                                toast.warn('O valor do desconto não pode ser maior que 100%');
+
+                                return;
+                              }
+
+                              setCupomRecord({ ...cupomRecord, valorDesconto: Number(e.target.value) });
+                            }}
+                            disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                          />
+                        ) : (
+                          <Input
+                            type="number"
+                            placeholder="Ex: 10%"
+                            min={1}
+                            max={1000}
+                            value={cupomRecord.valorDesconto}
+                            onChange={(e) => setCupomRecord({ ...cupomRecord, valorDesconto: Number(e.target.value) })}
+                            disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                          />
+                        )}
+                      </InputBlock>
+
+                      <InputBlock label="Valor mínimo da compra">
+                        <Input
+                          type="number"
+                          placeholder="Ex: R$ 250,00"
+                          min={0}
+                          max={1000}
+                          value={cupomRecord.valorMinimoCompra ?? 0}
+                          onChange={(e) =>
+                            setCupomRecord({ ...cupomRecord, valorMinimoCompra: Number(e.target.value) })
+                          }
+                          disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                        />
+                      </InputBlock>
+                    </div>
+
+                    <div className="flex gap-2 mt-2">
+                      <InputBlock label="Qtd dias validade">
+                        <Input
+                          type="number"
+                          placeholder="Ex: 10"
+                          min={0}
+                          value={cupomRecord.qtdDiasValidade}
+                          onChange={(e) => setCupomRecord({ ...cupomRecord, qtdDiasValidade: Number(e.target.value) })}
+                          disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                        />
+                      </InputBlock>
+
+                      <InputBlock label="Qtd total de utilização">
+                        <Input
+                          type="number"
+                          placeholder="Ex: 25"
+                          min={0}
+                          value={cupomRecord.qtdTotalUso}
+                          onChange={(e) => setCupomRecord({ ...cupomRecord, qtdTotalUso: Number(e.target.value) })}
+                          disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                        />
+                      </InputBlock>
+
+                      <InputBlock label="Qtd total de utilização por cliente">
+                        <Input
+                          type="number"
+                          placeholder="Ex: 1"
+                          min={0}
+                          value={cupomRecord.qtdUsoCliente ?? 1}
+                          onChange={(e) => setCupomRecord({ ...cupomRecord, qtdUsoCliente: Number(e.target.value) })}
+                          disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                        />
+                      </InputBlock>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="flex justify-between mt-5">
                 <Dialog open={toggleTemplate} onOpenChange={setToggleTemplate}>
@@ -355,8 +506,8 @@ const ReguaDetalhe: React.FC = () => {
               {etapaList.length === 0 && <CardFeedback text="Nenhuma etapa adicionada" />}
               <div className="flex items-center gap-2">
                 {etapaList.map((etapa, index) => (
-                  <div className="flex items-center gap-2">
-                    <Card key={index} className="p-4 mb-2 flex flex-col gap-1 max-w-64">
+                  <div className="flex items-center gap-2" key={index}>
+                    <Card key={index} className="p-4 mb-2 flex flex-col gap-1 max-w-72">
                       <InputBlock label="Ordem">
                         <Input value={index} disabled />
                       </InputBlock>

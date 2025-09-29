@@ -10,6 +10,9 @@ export interface IEtapa {
   template: ITemplate | null;
   condicaoSaida: string | null;
   qtdEnviosDia: number;
+  isUtilizaCupom?: boolean | null;
+  isEnviarCupomEtapaAnterior?: boolean | null;
+  cupom?: Record<string, any> | null;
   canalLabel?: string | null;
   templateLabel?: string | null;
   condicaoLabel?: string | null;

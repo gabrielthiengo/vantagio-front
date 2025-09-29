@@ -32,6 +32,9 @@ export const etapaSchema = z.object({
     .number()
     .min(5, 'O valor mínimo deve ser maior ou igual a 5')
     .max(1000, 'O valor máxio deve ser menor ou igual a 1000'),
+  isUtilizaCupom: z.boolean().optional(),
+  isEnviarCupomEtapaAnterior: z.boolean().optional(),
+  cupom: z.record(z.any()).nullable().optional(),
 });
 
 export type EtapaSchema = z.infer<typeof etapaSchema>;

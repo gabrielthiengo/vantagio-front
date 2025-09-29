@@ -8,6 +8,7 @@ import { apiRequest } from '@/services/apiRequest';
 import { IEtapa, IRegua } from '@/interfaces/IRegua';
 import { ITemplate } from '@/interfaces/ITemplate';
 import { IGatilho } from '@/interfaces/IGatilho';
+import { ICupomDesconto } from '@/interfaces/ICupomDesconto';
 
 type ReguaDadosRequest = {
   templates: ITemplate[];
@@ -50,6 +51,15 @@ export const useReguaDetalhe = (reguaId?: number) => {
   const [templates, setTemplates] = useState<ITemplate[]>([]);
   const [gatilhos, setGatilhos] = useState<IGatilho[]>([]);
   const [condicoes, setCondicoes] = useState<string[]>([]);
+  const [cupomRecord, setCupomRecord] = useState<ICupomDesconto>({
+    tipoDesconto: 'percentual',
+    valorDesconto: 10,
+    valorMinimoCompra: 0,
+    dataInicioValidade: new Date(),
+    qtdTotalUso: 0,
+    qtdUsoCliente: 1,
+    qtdDiasValidade: 15,
+  });
 
   async function criarReguaNotificacao(regua: ReguaDetalheSchema) {
     const etapasFormatadas = etapaList.map((e, index) => ({
@@ -59,6 +69,10 @@ export const useReguaDetalhe = (reguaId?: number) => {
       templateId: e.template?.id,
       qtdEnviosDia: e.qtdEnviosDia,
       condicaoSaida: e.condicaoSaida === '0' ? null : e.condicaoSaida,
+      dataInicioValidade: new Date(),
+      isUtilizaCupom: e.isUtilizaCupom,
+      isEnviarCupomEtapaAnterior: e.isEnviarCupomEtapaAnterior,
+      cupom: e.isUtilizaCupom ? e.cupom : null,
     }));
 
     const { sucesso, mensagem } = await apiRequest<IRegua>('/regua', 'POST', {
@@ -94,6 +108,9 @@ export const useReguaDetalhe = (reguaId?: number) => {
       templateId: e.template?.id,
       qtdEnviosDia: e.qtdEnviosDia,
       condicaoSaida: e.condicaoSaida === '0' ? null : e.condicaoSaida,
+      isUtilizaCupom: e.isUtilizaCupom,
+      isEnviarCupomEtapaAnterior: e.isEnviarCupomEtapaAnterior,
+      cupom: e.isUtilizaCupom ? e.cupom : null,
     }));
 
     const { sucesso, mensagem } = await apiRequest<IRegua>('/regua', 'PUT', {
@@ -185,7 +202,41 @@ export const useReguaDetalhe = (reguaId?: number) => {
   }, []);
 
   const adicionarEtapa = () => {
-    setEtapaList((prev) => [...prev, etapaRecord]);
+    if (etapaRecord.isUtilizaCupom) {
+      if (!cupomRecord.tipoDesconto || cupomRecord.tipoDesconto === '0') {
+        toast.error('Informe um tipo de desconto para o cupom');
+        return;
+      }
+
+      if (!cupomRecord.valorDesconto) {
+        toast.error('Informe um valor válido para o cupom');
+        return;
+      }
+
+      if (cupomRecord.qtdUsoCliente === 0) {
+        toast.error('A quantidade total de utilização por cliente deve ser maior que 0');
+        return;
+      }
+    }
+
+    const novaEtapa = {
+      ...etapaRecord,
+      cupom: etapaRecord.isUtilizaCupom
+        ? {
+            tipoDesconto: cupomRecord.tipoDesconto,
+            valorDesconto: cupomRecord.valorDesconto,
+            valorMinimoCompra: cupomRecord.valorMinimoCompra === 0 ? null : cupomRecord.valorMinimoCompra,
+            dataInicioValidade: cupomRecord.dataInicioValidade,
+            qtdTotalUso: cupomRecord.qtdTotalUso === 0 ? null : cupomRecord.qtdTotalUso,
+            qtdUsoCliente: cupomRecord.qtdUsoCliente,
+            qtdDiasValidade: cupomRecord.qtdDiasValidade,
+          }
+        : null,
+    };
+
+    setEtapaList((prev) => [...prev, novaEtapa]);
+
+    limparEtapaRecord();
 
     setEtapaRecord({
       canal: '0',
@@ -197,11 +248,29 @@ export const useReguaDetalhe = (reguaId?: number) => {
       qtdEnviosDia: 100,
       condicaoLabel: '',
       templateLabel: '',
+      isUtilizaCupom: false,
+      isEnviarCupomEtapaAnterior: false,
+    });
+  };
+
+  const limparEtapaRecord = () => {
+    setCupomRecord({
+      tipoDesconto: 'percentual',
+      dataInicioValidade: new Date(),
+      valorDesconto: 10,
+      qtdTotalUso: 0,
+      qtdUsoCliente: 1,
+      valorMinimoCompra: 0,
+      qtdDiasValidade: 15,
     });
   };
 
   const removerEtapa = (index: number) => {
     setEtapaList((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const existeCupomEtapaAnterior = (): boolean => {
+    return etapaList.some((etapa) => etapa.isUtilizaCupom === true);
   };
 
   return {
@@ -216,6 +285,8 @@ export const useReguaDetalhe = (reguaId?: number) => {
     condicoes,
     gatilhos,
     isLoadingTemplate,
+    cupomRecord,
+    setCupomRecord,
     register,
     handleSubmit,
     handleFormSubmit,
@@ -229,5 +300,7 @@ export const useReguaDetalhe = (reguaId?: number) => {
     removerEtapa,
     atualizarReguaNotificacao,
     listarTemplates,
+    limparEtapaRecord,
+    existeCupomEtapaAnterior,
   };
 };
