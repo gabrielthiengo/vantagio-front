@@ -65,6 +65,7 @@ export function RecomendacoesTable({ data, totalPages, currentPage, paginate }: 
     },
     {
       accessorKey: 'email',
+      header: 'Email',
     },
     {
       accessorKey: 'telefone',

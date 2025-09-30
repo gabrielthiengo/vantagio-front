@@ -127,7 +127,7 @@ const CupomDesconto = () => {
               )}
             </div>
           ) : (
-            <CardFeedback text="Selecione o cliente e o cupom para validar" />
+            <CardFeedback text="Selecione o cliente e o cupom para validar" className="mt-0" />
           )}
         </div>
       </CardContent>

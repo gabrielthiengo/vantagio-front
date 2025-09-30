@@ -1,5 +1,11 @@
 import { ITemplate } from './ITemplate';
 
+export interface ICondicaoSaida {
+  id?: number;
+  nome: string;
+  descricao: string;
+  queryCheck?: string | null;
+}
 export interface IEtapa {
   id?: number;
   reguaId?: number;
@@ -8,14 +14,11 @@ export interface IEtapa {
   delayDias: number;
   canal: string;
   template: ITemplate | null;
-  condicaoSaida: string | null;
+  condicao: ICondicaoSaida | null;
   qtdEnviosDia: number;
   isUtilizaCupom?: boolean | null;
   isEnviarCupomEtapaAnterior?: boolean | null;
   cupom?: Record<string, any> | null;
-  canalLabel?: string | null;
-  templateLabel?: string | null;
-  condicaoLabel?: string | null;
 }
 
 export interface IRegua {

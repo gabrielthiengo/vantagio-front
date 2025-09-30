@@ -5,14 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { apiRequest } from '@/services/apiRequest';
-import { IEtapa, IRegua } from '@/interfaces/IRegua';
+import { ICondicaoSaida, IEtapa, IRegua } from '@/interfaces/IRegua';
 import { ITemplate } from '@/interfaces/ITemplate';
 import { IGatilho } from '@/interfaces/IGatilho';
 import { ICupomDesconto } from '@/interfaces/ICupomDesconto';
 
 type ReguaDadosRequest = {
   templates: ITemplate[];
-  condicaoSaidas: string[];
+  condicoes: ICondicaoSaida[];
   gatilhos: IGatilho[];
 };
 
@@ -38,19 +38,16 @@ export const useReguaDetalhe = (reguaId?: number) => {
   const [reguaRecord, setReguaRecord] = useState<IRegua>({} as IRegua);
   const [etapaRecord, setEtapaRecord] = useState<IEtapa>({
     canal: '0',
-    condicaoSaida: '0',
+    condicao: {} as ICondicaoSaida,
     delayDias: 0,
     ordem: 0,
     template: {} as ITemplate,
     qtdEnviosDia: 100,
-    canalLabel: '',
-    condicaoLabel: '',
-    templateLabel: '',
   });
   const [etapaList, setEtapaList] = useState<IEtapa[]>([]);
   const [templates, setTemplates] = useState<ITemplate[]>([]);
   const [gatilhos, setGatilhos] = useState<IGatilho[]>([]);
-  const [condicoes, setCondicoes] = useState<string[]>([]);
+  const [condicoes, setCondicoes] = useState<ICondicaoSaida[]>([]);
   const [cupomRecord, setCupomRecord] = useState<ICupomDesconto>({
     tipoDesconto: 'percentual',
     valorDesconto: 10,
@@ -66,14 +63,16 @@ export const useReguaDetalhe = (reguaId?: number) => {
       ordem: index,
       delayDias: e.delayDias,
       canal: e.canal,
-      templateId: e.template?.id,
+      templateId: e.template?.id ?? null,
       qtdEnviosDia: e.qtdEnviosDia,
-      condicaoSaida: e.condicaoSaida === '0' ? null : e.condicaoSaida,
+      condicaoSaidaId: e.condicao?.id ?? null,
       dataInicioValidade: new Date(),
       isUtilizaCupom: e.isUtilizaCupom,
       isEnviarCupomEtapaAnterior: e.isEnviarCupomEtapaAnterior,
       cupom: e.isUtilizaCupom ? e.cupom : null,
     }));
+
+    console.log(etapasFormatadas);
 
     const { sucesso, mensagem } = await apiRequest<IRegua>('/regua', 'POST', {
       nome: regua.nome,
@@ -107,7 +106,7 @@ export const useReguaDetalhe = (reguaId?: number) => {
       canal: e.canal,
       templateId: e.template?.id,
       qtdEnviosDia: e.qtdEnviosDia,
-      condicaoSaida: e.condicaoSaida === '0' ? null : e.condicaoSaida,
+      condicaoSaidaId: e.condicao?.id ?? null,
       isUtilizaCupom: e.isUtilizaCupom,
       isEnviarCupomEtapaAnterior: e.isEnviarCupomEtapaAnterior,
       cupom: e.isUtilizaCupom ? e.cupom : null,
@@ -154,8 +153,8 @@ export const useReguaDetalhe = (reguaId?: number) => {
       setGatilhos(data?.gatilhos);
     }
 
-    if (data?.condicaoSaidas) {
-      setCondicoes(data.condicaoSaidas);
+    if (data?.condicoes) {
+      setCondicoes(data.condicoes);
     }
   }
 
@@ -240,14 +239,11 @@ export const useReguaDetalhe = (reguaId?: number) => {
 
     setEtapaRecord({
       canal: '0',
-      condicaoSaida: '0',
+      condicao: {} as ICondicaoSaida,
       delayDias: 5,
       ordem: 0,
       template: {} as ITemplate,
-      canalLabel: '',
       qtdEnviosDia: 100,
-      condicaoLabel: '',
-      templateLabel: '',
       isUtilizaCupom: false,
       isEnviarCupomEtapaAnterior: false,
     });

@@ -4,7 +4,7 @@ import { apiRequest } from '@/services/apiRequest';
 import { toast } from 'react-toastify';
 
 export const useMensagens = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [toggleEncerrar, setToggleEncerrar] = useState(false);
   const [nomeCliente, setNomeCliente] = useState('');
   const [isEncerrando, setIsEncerrando] = useState(false);
@@ -36,8 +36,6 @@ export const useMensagens = () => {
 
   async function inativarConversa(nome: string) {
     setIsEncerrando(true);
-
-    console.log(nome);
 
     const { sucesso, mensagem } = await apiRequest('/whatsapp/encerrar', 'PUT', null, {
       nome,

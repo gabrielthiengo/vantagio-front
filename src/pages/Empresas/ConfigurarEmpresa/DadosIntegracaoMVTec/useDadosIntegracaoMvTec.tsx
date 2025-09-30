@@ -19,7 +19,7 @@ export const useDadosIntegracaoMvTec = (empresaId: number) => {
   const [configuracaoRecord, setConfiguracaoRecord] = useState<IConfiguracaoDatabaseMV>({} as IConfiguracaoDatabaseMV);
 
   const listarDadosIntegracao = async () => {
-    const { data } = await apiRequest<DadosIntegracaoResponse>('/empresa/integracao/mv', 'GET', {
+    const { data } = await apiRequest<DadosIntegracaoResponse>('/empresa/integracao/mv', 'GET', null, {
       empresaId,
     });
 

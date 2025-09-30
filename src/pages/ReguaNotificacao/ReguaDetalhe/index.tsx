@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Boxes, ChevronsRight, LoaderCircle, Plus, Trash } from 'lucide-react';
+import { Boxes, ChevronsRight, Info, LoaderCircle, Plus, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CardFeedback from '@/components/CardFeedback';
 import { InputError } from '@/components/InputErrors';
@@ -25,6 +25,8 @@ import LoadingComponent from '@/components/LoadingComponent';
 import { ITemplate } from '@/interfaces/ITemplate';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'react-toastify';
+import { ICondicaoSaida } from '@/interfaces/IRegua';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const ReguaDetalhe: React.FC = () => {
   const { id: reguaId } = useParams();
@@ -126,13 +128,22 @@ const ReguaDetalhe: React.FC = () => {
                           <SelectItem value="0">Selecione</SelectItem>
                           {gatilhos.map((gatilho) => {
                             return (
-                              <div>
-                                <SelectItem className="mb-0 pb-0" key={gatilho.id} value={String(gatilho.id ?? '')}>
-                                  {gatilho.nome}
-                                </SelectItem>
+                              <SelectItem className="mb-0 pb-0" key={gatilho.id} value={String(gatilho.id ?? '')}>
+                                <div className="flex items-center w-full gap-2">
+                                  <TooltipProvider>
+                                    <Tooltip delayDuration={100}>
+                                      <TooltipTrigger asChild>
+                                        <Info size={14} />
+                                      </TooltipTrigger>
+                                      <TooltipContent className=" bg-white text-gray-700 border shadow-md flex flex-col items-center">
+                                        <p>{gatilho.descricao}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
 
-                                <span className="pl-2 text-xs text-gray-400">{gatilho.descricao}</span>
-                              </div>
+                                  {gatilho.nome}
+                                </div>
+                              </SelectItem>
                             );
                           })}
                         </SelectContent>
@@ -175,7 +186,7 @@ const ReguaDetalhe: React.FC = () => {
               <InputBlock label="Ação" isRequired>
                 <Select
                   onValueChange={(v) => {
-                    setEtapaRecord({ ...etapaRecord, canal: v, template: {} as ITemplate, condicaoSaida: null });
+                    setEtapaRecord({ ...etapaRecord, canal: v, template: {} as ITemplate, condicao: null });
 
                     if (v === 'whatsapp' || v === 'email') {
                       listarTemplates(v);
@@ -185,7 +196,7 @@ const ReguaDetalhe: React.FC = () => {
                   disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione um canal" />
+                    <SelectValue placeholder="Selecione uma ação" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="0">Selecione</SelectItem>
@@ -267,21 +278,48 @@ const ReguaDetalhe: React.FC = () => {
                   info="Defina a condição que fará com que esta etapa ou automação seja encerrada ou pule para a próxima etapa. Por exemplo, se o cliente atender a determinada condição, ele será removido desta automação."
                 >
                   <Select
-                    onValueChange={(v) => setEtapaRecord({ ...etapaRecord, condicaoSaida: v })}
-                    value={etapaRecord.condicaoSaida ?? ''}
+                    onValueChange={(condicaoId) => {
+                      const condicaoSelecionada = condicoes.find((c) => c.id === Number(condicaoId));
+
+                      if (condicaoSelecionada) {
+                        setEtapaRecord({
+                          ...etapaRecord,
+                          condicao: condicaoSelecionada,
+                        });
+                      } else {
+                        setEtapaRecord({
+                          ...etapaRecord,
+                          condicao: {} as ICondicaoSaida,
+                        });
+                      }
+                    }}
+                    value={String(etapaRecord.condicao?.id ?? '')}
                     disabled={
                       etapaRecord.canal === 'atividade' || new Date(reguaRecord.dataFim ?? new Date()) < new Date()
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecione uma condição" />
+                      <SelectValue placeholder="Selecione um critério" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="0">Selecione</SelectItem>
                       {condicoes.map((condicao) => {
                         return (
-                          <SelectItem key={condicao} value={condicao}>
-                            {condicao}
+                          <SelectItem key={condicao.id} value={String(condicao.id)}>
+                            <div className="flex items-center w-full gap-2">
+                              <TooltipProvider>
+                                <Tooltip delayDuration={100}>
+                                  <TooltipTrigger asChild>
+                                    <Info size={14} />
+                                  </TooltipTrigger>
+                                  <TooltipContent className=" bg-white text-gray-700 border shadow-md flex flex-col items-center">
+                                    <p>{condicao.descricao}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+
+                              {condicao.nome}
+                            </div>
                           </SelectItem>
                         );
                       })}
@@ -525,7 +563,7 @@ const ReguaDetalhe: React.FC = () => {
                       </InputBlock>
 
                       <InputBlock label="Critério de saída">
-                        <Input value={etapa.condicaoSaida ?? 'Sem critério de saída'} disabled />
+                        <Input value={etapa.condicao?.nome ?? 'Sem critério de saída'} disabled />
                       </InputBlock>
 
                       <InputBlock label="Qtd máxima de envios por dia">

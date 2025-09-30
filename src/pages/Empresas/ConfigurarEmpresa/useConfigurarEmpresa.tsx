@@ -10,7 +10,7 @@ export const useConfigurarEmpresa = (cnpj: string) => {
     try {
       setIsLoading(true);
 
-      const { data } = await apiRequest<IEmpresa>('/empresa/obter', 'GET', {
+      const { data } = await apiRequest<IEmpresa>('/empresa/obter', 'GET', null, {
         cnpj,
       });
 
