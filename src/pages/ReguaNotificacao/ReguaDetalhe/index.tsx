@@ -135,7 +135,7 @@ const ReguaDetalhe: React.FC = () => {
                                       <TooltipTrigger asChild>
                                         <Info size={14} />
                                       </TooltipTrigger>
-                                      <TooltipContent className=" bg-white text-gray-700 border shadow-md flex flex-col items-center">
+                                      <TooltipContent className="w-[500px] bg-white text-gray-700 border shadow-md flex flex-col items-center">
                                         <p>{gatilho.descricao}</p>
                                       </TooltipContent>
                                     </Tooltip>

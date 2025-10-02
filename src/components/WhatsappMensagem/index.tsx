@@ -122,7 +122,7 @@ const WhatsappMensagem = () => {
 
         {isLoading && <LoadingComponent />}
 
-        {mensagens.length === 0 && <CardFeedback text="Nenhuma mensagem encontrada" />}
+        {!isLoading && mensagens.length === 0 && <CardFeedback text="Nenhuma mensagem encontrada" />}
       </CardContent>
 
       <AlertDialog open={toggleEncerrar} onOpenChange={setToggleEncerrar}>
