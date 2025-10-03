@@ -18,6 +18,7 @@ import PedidoDetalhe from './pages/PedidoDetalhe';
 import ReguaList from './pages/ReguaNotificacao/ReguaList';
 import ReguaDetalhe from './pages/ReguaNotificacao/ReguaDetalhe';
 import ReguaInsights from './pages/ReguaNotificacao/ReguaInsights';
+import Timers from './pages/Timers';
 
 export default function App() {
   return (
@@ -123,6 +124,15 @@ export default function App() {
             element={
               <ProtectedLayout>
                 <Empresas />
+              </ProtectedLayout>
+            }
+          />
+
+          <Route
+            path="/timers"
+            element={
+              <ProtectedLayout>
+                <Timers />
               </ProtectedLayout>
             }
           />

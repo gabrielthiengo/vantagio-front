@@ -1,4 +1,4 @@
-import { Boxes, HomeIcon, Users, Building2, LogOut } from 'lucide-react';
+import { Boxes, HomeIcon, Users, Building2, LogOut, Timer } from 'lucide-react';
 import { SidebarItem } from '../SidebarItem';
 import logo from '@/assets/logo-vantagio.jpeg';
 import logo2 from '@/assets/VLogo.png';
@@ -52,6 +52,12 @@ export const Sidebar = () => {
       {usuario?.isMaster && (
         <SidebarItem title="Empresas" page="/empresa">
           <Building2 size={18} />
+        </SidebarItem>
+      )}
+
+      {usuario?.isMaster && (
+        <SidebarItem title="Timers" page="/timers">
+          <Timer size={18} />
         </SidebarItem>
       )}
 
