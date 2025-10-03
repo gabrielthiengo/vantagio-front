@@ -3,6 +3,7 @@ import FaturamentoMesAtualAnterior from '@/components/Cards/FaturamentoMesAtualA
 import NovosClientes from '@/components/Cards/NovosClientes';
 import TicketMedioMesAtAnt from '@/components/Cards/TicketMedioMesAtAnt';
 import CupomDesconto from '@/components/CupomDesconto';
+import EngajamentoCliente from '@/components/Graficos/EngajamentoCliente';
 import NotificacaoAlertas from '@/components/NotificacaoAlertas';
 import Recomendacoes from '@/components/Recomendacoes';
 import WhatsappMensagem from '@/components/WhatsappMensagem';
@@ -27,7 +28,8 @@ export const Inicio = () => {
             <Recomendacoes />
           </div>
         </div>
-        <div className="grid grid-rows-2 gap-3 w-1/3 ">
+        <div className="flex flex-col gap-2">
+          <EngajamentoCliente />
           <WhatsappMensagem />
         </div>
       </div>
