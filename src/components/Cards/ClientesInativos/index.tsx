@@ -6,6 +6,7 @@ export default function ClientesInativos() {
   const [dados, setDados] = useState({
     clientesInativos: 0,
     percentual: 0,
+    descricao: '',
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,6 +34,8 @@ export default function ClientesInativos() {
           <h3 className="text-gray-500 text-sm mb-1">Clientes Inativos</h3>
           <p className="text-2xl font-bold text-gray-800">{dados.clientesInativos}</p>
           <div className="text-sm text-red-600 mt-1">{dados.percentual}% da base</div>
+
+          <div className="text-xs text-gray-400">{dados.descricao}</div>
         </div>
       ) : (
         <div className="bg-white border border-gray-300 rounded-md p-4 hover:transition min-h-[130px]">
