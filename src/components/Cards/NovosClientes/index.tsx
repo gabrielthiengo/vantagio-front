@@ -37,7 +37,7 @@ export default function NovosClientes() {
             {dados.variacao > 0 ? <ArrowUp size={12} className="mr-1" /> : <ArrowDown className="mr-1" size={12} />}{' '}
             {dados.variacao > 100 ? '+' + 100 : dados.variacao}% vs mês anterior
           </div>
-          <div className="text-xs text-gray-400">{dados.totalNovosClientes} total de clientes</div>
+          <div className="text-xs text-gray-400">{dados.totalNovosClientes} no mês anterior</div>
         </div>
       ) : (
         <div className="bg-white border border-gray-300 rounded-md p-4 hover:transition min-h-[130px]">
