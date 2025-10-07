@@ -72,7 +72,7 @@ const WhatsappMensagem = () => {
                 <div className="flex items-center gap-2">
                   <img src="https://i.pravatar.cc/40?img=3" alt="Cliente" className="w-6 h-6 rounded-full" />
                   <div>
-                    <span className="text-sm">{mensagem.pessoa?.nome}</span>
+                    <span className="text-sm capitalize">{mensagem.pessoa?.nome ?? ''.toLowerCase()}</span>
                     <p className="text-xs text-gray-600">{mensagem.telefone}</p>
                   </div>
                 </div>
