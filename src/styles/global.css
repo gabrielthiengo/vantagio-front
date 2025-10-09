@@ -29,6 +29,15 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    --whatsapp: 142 70% 49%;
+    --whatsapp-foreground: 0 0% 100%;
+
+    --email: 221 83% 53%;
+    --email-foreground: 0 0% 100%;
+
+    --atividade: 30 90% 65%;
+    --atividade-foreground: 0 0% 20%;
   }
 
   .dark {

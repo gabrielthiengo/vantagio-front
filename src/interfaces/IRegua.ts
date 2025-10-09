@@ -18,6 +18,7 @@ export interface IEtapa {
   qtdEnviosDia: number;
   isUtilizaCupom?: boolean | null;
   isEnviarCupomEtapaAnterior?: boolean | null;
+  isUtilizaCupomExistente?: boolean | null;
   cupom?: Record<string, any> | null;
 }
 

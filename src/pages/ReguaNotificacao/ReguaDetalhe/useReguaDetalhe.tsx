@@ -69,10 +69,9 @@ export const useReguaDetalhe = (reguaId?: number) => {
       dataInicioValidade: new Date(),
       isUtilizaCupom: e.isUtilizaCupom,
       isEnviarCupomEtapaAnterior: e.isEnviarCupomEtapaAnterior,
-      cupom: e.isUtilizaCupom ? e.cupom : null,
+      isUtilizaCupomExistente: e.isUtilizaCupomExistente,
+      cupom: e.isUtilizaCupom || e.isUtilizaCupomExistente ? e.cupom : null,
     }));
-
-    console.log(etapasFormatadas);
 
     const { sucesso, mensagem } = await apiRequest<IRegua>('/regua', 'POST', {
       nome: regua.nome,
@@ -109,7 +108,8 @@ export const useReguaDetalhe = (reguaId?: number) => {
       condicaoSaidaId: e.condicao?.id ?? null,
       isUtilizaCupom: e.isUtilizaCupom,
       isEnviarCupomEtapaAnterior: e.isEnviarCupomEtapaAnterior,
-      cupom: e.isUtilizaCupom ? e.cupom : null,
+      isUtilizaCupomExistente: e.isUtilizaCupomExistente,
+      cupom: e.isUtilizaCupom || e.isUtilizaCupomExistente ? e.cupom : null,
     }));
 
     const { sucesso, mensagem } = await apiRequest<IRegua>('/regua', 'PUT', {
@@ -218,6 +218,11 @@ export const useReguaDetalhe = (reguaId?: number) => {
       }
     }
 
+    if (etapaRecord.isUtilizaCupomExistente && (!cupomRecord.codigo || cupomRecord.codigo === '')) {
+      toast.error('O código do cupom é obrigatório');
+      return;
+    }
+
     const novaEtapa = {
       ...etapaRecord,
       cupom: etapaRecord.isUtilizaCupom
@@ -230,6 +235,8 @@ export const useReguaDetalhe = (reguaId?: number) => {
             qtdUsoCliente: cupomRecord.qtdUsoCliente,
             qtdDiasValidade: cupomRecord.qtdDiasValidade,
           }
+        : etapaRecord.isUtilizaCupomExistente
+        ? { codigo: cupomRecord.codigo }
         : null,
     };
 
@@ -246,11 +253,13 @@ export const useReguaDetalhe = (reguaId?: number) => {
       qtdEnviosDia: 100,
       isUtilizaCupom: false,
       isEnviarCupomEtapaAnterior: false,
+      isUtilizaCupomExistente: false,
     });
   };
 
   const limparEtapaRecord = () => {
     setCupomRecord({
+      codigo: null,
       tipoDesconto: 'percentual',
       dataInicioValidade: new Date(),
       valorDesconto: 10,

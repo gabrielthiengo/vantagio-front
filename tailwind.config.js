@@ -55,6 +55,18 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        whatsapp: {
+          DEFAULT: 'hsl(var(--whatsapp))',
+          foreground: 'hsl(var(--whatsapp-foreground))',
+        },
+        email: {
+          DEFAULT: 'hsl(var(--email))',
+          foreground: 'hsl(var(--email-foreground))',
+        },
+        atividade: {
+          DEFAULT: 'hsl(var(--email))',
+          foreground: 'hsl(var(--email-foreground))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

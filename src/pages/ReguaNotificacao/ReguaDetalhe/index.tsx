@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Boxes, ChevronsRight, Info, LoaderCircle, Plus, Trash } from 'lucide-react';
+import { Boxes, Info, LoaderCircle, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CardFeedback from '@/components/CardFeedback';
 import { InputError } from '@/components/InputErrors';
@@ -27,6 +27,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'react-toastify';
 import { ICondicaoSaida } from '@/interfaces/IRegua';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import EtapaList from './EtapaList';
 
 const ReguaDetalhe: React.FC = () => {
   const { id: reguaId } = useParams();
@@ -347,7 +348,7 @@ const ReguaDetalhe: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2 text-xs mb-2 mt-2">
                   <Checkbox
-                    value={String(etapaRecord.isEnviarCupomEtapaAnterior ?? false)}
+                    checked={etapaRecord.isEnviarCupomEtapaAnterior ?? false}
                     onCheckedChange={(e) => {
                       setEtapaRecord({ ...etapaRecord, isEnviarCupomEtapaAnterior: Boolean(e), isUtilizaCupom: false });
 
@@ -365,9 +366,19 @@ const ReguaDetalhe: React.FC = () => {
                     checked={etapaRecord.isUtilizaCupom ?? false}
                     onCheckedChange={(e) => {
                       if (e) {
-                        setEtapaRecord({ ...etapaRecord, isUtilizaCupom: true });
+                        setEtapaRecord({
+                          ...etapaRecord,
+                          isUtilizaCupom: true,
+                          isEnviarCupomEtapaAnterior: false,
+                          isUtilizaCupomExistente: false,
+                        });
                       } else {
-                        setEtapaRecord({ ...etapaRecord, isUtilizaCupom: false });
+                        setEtapaRecord({
+                          ...etapaRecord,
+                          isUtilizaCupom: false,
+                          isEnviarCupomEtapaAnterior: false,
+                          isUtilizaCupomExistente: false,
+                        });
                         limparEtapaRecord();
                       }
                     }}
@@ -485,6 +496,39 @@ const ReguaDetalhe: React.FC = () => {
                     </div>
                   </div>
                 )}
+
+                <div className="flex items-center gap-2 text-xs mb-2 mt-2">
+                  <Checkbox
+                    checked={etapaRecord.isUtilizaCupomExistente ?? false}
+                    onCheckedChange={(e) => {
+                      setEtapaRecord({
+                        ...etapaRecord,
+                        isUtilizaCupomExistente: Boolean(e),
+                        isUtilizaCupom: false,
+                        isEnviarCupomEtapaAnterior: false,
+                      });
+
+                      limparEtapaRecord();
+                    }}
+                    disabled={
+                      new Date(reguaRecord.dataFim ?? new Date()) < new Date() ||
+                      (etapaRecord.isEnviarCupomEtapaAnterior ?? false)
+                    }
+                  />
+                  Deseja enviar um cupom existente?
+                </div>
+
+                {etapaRecord.isUtilizaCupomExistente && (
+                  <InputBlock label="Código do cupom" isRequired>
+                    <Input
+                      type="text"
+                      placeholder="Ex: EU98CB"
+                      value={cupomRecord.codigo ?? ''}
+                      onChange={(e) => setCupomRecord({ ...cupomRecord, codigo: e.target.value })}
+                      disabled={new Date(reguaRecord.dataFim ?? new Date()) < new Date()}
+                    />
+                  </InputBlock>
+                )}
               </div>
 
               <div className="flex justify-between mt-5">
@@ -542,52 +586,14 @@ const ReguaDetalhe: React.FC = () => {
               <Separator />
 
               {etapaList.length === 0 && <CardFeedback text="Nenhuma etapa adicionada" />}
-              <div className="flex items-center gap-2">
-                {etapaList.map((etapa, index) => (
-                  <div className="flex items-center gap-2" key={index}>
-                    <Card key={index} className="p-4 mb-2 flex flex-col gap-1 max-w-72">
-                      <InputBlock label="Ordem">
-                        <Input value={index} disabled />
-                      </InputBlock>
 
-                      <InputBlock label="Ação">
-                        <Input value={etapa.canal} disabled />
-                      </InputBlock>
-
-                      <InputBlock label="Template">
-                        <Input value={etapa.template?.nome ?? 'Sem template'} disabled />
-                      </InputBlock>
-
-                      <InputBlock label="Tempo de espera (em dias)">
-                        <Input value={etapa.delayDias ?? 0} disabled />
-                      </InputBlock>
-
-                      <InputBlock label="Critério de saída">
-                        <Input value={etapa.condicao?.nome ?? 'Sem critério de saída'} disabled />
-                      </InputBlock>
-
-                      <InputBlock label="Qtd máxima de envios por dia">
-                        <Input value={etapa.qtdEnviosDia} disabled />
-                      </InputBlock>
-
-                      <Button
-                        disabled={!!reguaId}
-                        variant="destructive"
-                        className="w-full mt-2 flex items-center gap-2"
-                        onClick={(e) => {
-                          e.preventDefault();
-
-                          removerEtapa(index);
-                        }}
-                      >
-                        <Trash size={14} /> Remover
-                      </Button>
-                    </Card>
-
-                    {etapaList.length > 0 && index < etapaList.length - 1 && <ChevronsRight color="#003366" />}
-                  </div>
-                ))}
-              </div>
+              <EtapaList
+                etapas={etapaList}
+                isDisabledRemover={!!reguaId}
+                removerOnClick={(index) => {
+                  removerEtapa(index);
+                }}
+              />
             </CardContent>
           </Card>
 
