@@ -274,7 +274,7 @@ export const useReguaDetalhe = (reguaId?: number) => {
     setEtapaRecord({
       canal: '0',
       condicao: {} as ICondicaoSaida,
-      delayDias: etapaList.length === 1 ? 0 : 1,
+      delayDias: etapaList.length === 1 ? 0 : 5,
       ordem: 0,
       template: {} as ITemplate,
       qtdEnviosDia: 100,
