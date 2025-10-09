@@ -271,6 +271,18 @@ export const useReguaDetalhe = (reguaId?: number) => {
   };
 
   const removerEtapa = (index: number) => {
+    setEtapaRecord({
+      canal: '0',
+      condicao: {} as ICondicaoSaida,
+      delayDias: etapaList.length === 1 ? 0 : 1,
+      ordem: 0,
+      template: {} as ITemplate,
+      qtdEnviosDia: 100,
+      isUtilizaCupom: false,
+      isEnviarCupomEtapaAnterior: false,
+      isUtilizaCupomExistente: false,
+    });
+
     setEtapaList((prev) => prev.filter((_, i) => i !== index));
   };
 
