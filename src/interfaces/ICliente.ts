@@ -1,3 +1,4 @@
+import { IPedido } from './IPedido';
 import { IPessoa } from './IPessoa';
 
 export interface ICliente {
@@ -14,4 +15,5 @@ export interface ICliente {
   createdAt: Date;
   updatedAt: Date;
   pessoa: IPessoa;
+  pedidos?: IPedido[];
 }

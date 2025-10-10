@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { BarChart, Bar, Tooltip, Legend, XAxis, YAxis, ResponsiveContainer, LabelList, CartesianGrid } from 'recharts';
+import EngajamentoDetalhe from '../EngajamentoDetalhe';
 
 type AnyRow = { status: string; total: number };
 
@@ -56,7 +57,6 @@ function toPercentData(rows: Row[]) {
 }
 
 const CustomTooltip = ({ active, payload, label, rawCounts }: any & { rawCounts: Record<Status, number> }) => {
-  console.log(label);
   if (!active || !payload?.length) return null;
   const list = [...payload].sort(
     (a, b) => STATUS_ORDER.indexOf(a.name as Status) - STATUS_ORDER.indexOf(b.name as Status),
@@ -78,7 +78,8 @@ const CustomTooltip = ({ active, payload, label, rawCounts }: any & { rawCounts:
 };
 
 export function EngajamentoBar100({ rows }: { rows: AnyRow[] }) {
-  // Normaliza internamente: string -> Status
+  const [status, setStatus] = useState('');
+
   const rowsTyped: Row[] = useMemo(() => {
     const arr = rows
       .map((r) => {
@@ -95,6 +96,10 @@ export function EngajamentoBar100({ rows }: { rows: AnyRow[] }) {
 
   const data = useMemo(() => [chartRow], [chartRow]);
 
+  const handleClickBar = (status: string) => {
+    setStatus(status);
+  };
+
   return (
     <div className="w-full">
       <ResponsiveContainer width="100%" height={350}>
@@ -110,7 +115,16 @@ export function EngajamentoBar100({ rows }: { rows: AnyRow[] }) {
           />
 
           {STATUS_ORDER.map((s) => (
-            <Bar key={s} dataKey={s} fill={STATUS_COLOR[s]} stackId="1">
+            <Bar
+              key={s}
+              dataKey={s}
+              fill={STATUS_COLOR[s]}
+              stackId="1"
+              cursor="pointer"
+              onClick={(_, __) => {
+                handleClickBar(s);
+              }}
+            >
               <LabelList
                 dataKey={s}
                 position="center"
@@ -121,6 +135,8 @@ export function EngajamentoBar100({ rows }: { rows: AnyRow[] }) {
           ))}
         </BarChart>
       </ResponsiveContainer>
+
+      {status !== '' && <EngajamentoDetalhe status={status} onToggleChange={() => handleClickBar('')} />}
     </div>
   );
 }

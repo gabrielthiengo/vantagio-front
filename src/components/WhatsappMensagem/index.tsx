@@ -68,7 +68,10 @@ const WhatsappMensagem = () => {
         {!isLoading &&
           mensagens.map((mensagem) => {
             return (
-              <div className="flex-1 p-4 overflow-y-auto space-y-4 mb-2 bg-gray-200/90 rounded shadow">
+              <div
+                key={mensagem.clienteId}
+                className="flex-1 p-4 overflow-y-auto space-y-4 mb-2 bg-gray-200/90 rounded shadow"
+              >
                 <div className="flex items-center gap-2">
                   <img src="https://i.pravatar.cc/40?img=3" alt="Cliente" className="w-6 h-6 rounded-full" />
                   <div>
@@ -80,7 +83,7 @@ const WhatsappMensagem = () => {
                 <div className="flex-1 overflow-y-auto mb-4 space-y-2 ">
                   {mensagem.mensagens.map((m) => {
                     return (
-                      <div className="flex items-start space-x-3">
+                      <div key={m.id} className="flex items-start space-x-3">
                         <div className="mb-1">
                           <div className="bg-white p-3 rounded-xl shadow max-w-xs relative min-w-96">
                             <p className="text-gray-800 mb-2 text-sm">{m.mensagem}</p>

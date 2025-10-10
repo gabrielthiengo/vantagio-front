@@ -49,7 +49,7 @@ export function formatarEndereco(endereco: EnderecoParams): string {
 }
 
 export function formatarData(dataIso: string, onlyDate?: boolean): string {
-  if (dataIso === 'null') return '';
+  if (dataIso === 'null' || dataIso === '') return '';
 
   const [data, hora] = dataIso.split('T');
 
