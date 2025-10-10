@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import CardFeedback from '@/components/CardFeedback';
 import { formatarCurrency, formatarData } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 type EngajamentoDetalheProps = {
   status: string;
@@ -23,8 +24,17 @@ const categoryLabels: Record<CustomerCategory, string> = {
 };
 
 const EngajamentoDetalhe = ({ status, onToggleChange }: EngajamentoDetalheProps) => {
-  const { loading, isOpen, dadosEngajamento, statusSelecionado, toggleModal, selecionarStatusOnClick } =
-    useEngajamentoDetalhe(status, onToggleChange);
+  const {
+    loading,
+    isOpen,
+    dadosEngajamento,
+    statusSelecionado,
+    page,
+    total,
+    setPage,
+    toggleModal,
+    selecionarStatusOnClick,
+  } = useEngajamentoDetalhe(status, onToggleChange);
 
   return (
     <Dialog open={isOpen} onOpenChange={toggleModal}>
@@ -128,6 +138,15 @@ const EngajamentoDetalhe = ({ status, onToggleChange }: EngajamentoDetalheProps)
               );
             })}
         </Accordion>
+
+        <div className="flex justify-end gap-2">
+          <Button variant="outline" size="sm" onClick={() => setPage(page - 1)} disabled={page === 1}>
+            Anterior
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setPage(page + 1)} disabled={total === page}>
+            Próximo
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

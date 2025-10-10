@@ -18,7 +18,7 @@ export const useEngajamentoDetalhe = (status: string, onToggleChange: any) => {
 
   const listarEngajamentoClienteDetalhe = async () => {
     setLoading('loading');
-
+    console.log(statusSelecionado);
     const { sucesso, mensagem, data, total } = await apiRequest<IClienteEngajamento[]>(
       '/engajamento/list',
       'GET',
@@ -43,16 +43,17 @@ export const useEngajamentoDetalhe = (status: string, onToggleChange: any) => {
 
   const selecionarStatusOnClick = (novoStatus: string) => {
     setStatusSelecionado(novoStatus);
-
-    listarEngajamentoClienteDetalhe();
+    setPage(1);
   };
 
   useEffect(() => {
     if (status !== '' && isOpen) {
       listarEngajamentoClienteDetalhe();
-      setStatusSelecionado(status);
+      if (statusSelecionado === '') {
+        setStatusSelecionado(status);
+      }
     }
-  }, [status, page]);
+  }, [status, page, statusSelecionado]);
 
   return {
     loading,
